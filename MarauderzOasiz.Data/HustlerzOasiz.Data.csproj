@@ -13,4 +13,14 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.20" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HustlerzOasiz.Common\HustlerzOasiz.Common.csproj" />
+    <ProjectReference Include="..\HustlerzOasiz.Web.ViewModels\HustlerzOasiz.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\MarauderzOasiz.Data.Models\HustlerzOasiz.Data.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

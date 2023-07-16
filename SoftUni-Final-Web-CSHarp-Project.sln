@@ -16,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{CEDBE9C3-DAD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{99FC3A4E-664C-4F35-B633-5694B8C655E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarauderzOasiz.Data", "MarauderzOasiz.Data\MarauderzOasiz.Data.csproj", "{01BE34A9-3A8F-4E54-A155-36CE2D8652C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HustlerzOasiz.Data", "MarauderzOasiz.Data\HustlerzOasiz.Data.csproj", "{01BE34A9-3A8F-4E54-A155-36CE2D8652C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarauderzOasiz.Data.Models", "MarauderzOasiz.Data.Models\MarauderzOasiz.Data.Models.csproj", "{64453318-DFF6-4D99-BC0C-6F7061802103}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HustlerzOasiz.Data.Models", "MarauderzOasiz.Data.Models\HustlerzOasiz.Data.Models.csproj", "{64453318-DFF6-4D99-BC0C-6F7061802103}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HustlerzOasiz.Web.ViewModels", "HustlerzOasiz.Web.ViewModels\HustlerzOasiz.Web.ViewModels.csproj", "{7E631401-9BD9-445D-B6E9-899D34CC43A9}"
 EndProject
