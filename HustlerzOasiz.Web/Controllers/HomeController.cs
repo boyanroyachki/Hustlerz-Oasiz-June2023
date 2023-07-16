@@ -1,4 +1,5 @@
-﻿using HustlerzOasiz.Web.Models;
+﻿using HustlerzOasiz.Web.ViewModels;
+using HustlerzOasiz.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

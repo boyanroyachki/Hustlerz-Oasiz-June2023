@@ -16,6 +16,24 @@ html {
 body {
     margin-bottom: 60px;
     font-family: Mikro, sans-serif;
+    color: whitesmoke;
     font-weight: 700;
     line-height: .95;
+    
+
+    background-image: url('/Images/WebPrjctBackground1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This will fix the background image and content will scroll */
+
+
+}
+.navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.nabvar {
+    color: whitesmoke;
+    background-color: darkslategrey;
 }
