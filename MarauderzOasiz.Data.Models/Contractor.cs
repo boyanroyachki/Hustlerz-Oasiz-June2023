@@ -8,7 +8,7 @@ namespace MarauderzOasiz.Data.Models
     {
         public Contractor()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
             OwnedJobs = new HashSet<Job>();
         }
 

@@ -13,7 +13,7 @@ namespace MarauderzOasiz.Data.Models
     {
         public Job()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
             Status = JobStatus.Active.ToString();
         }
 
@@ -50,7 +50,6 @@ namespace MarauderzOasiz.Data.Models
         [Required]
         public int CategoryId { get; set; }
 
-        [Required]
         public virtual Category Category { get; set; } = null!;
 
 

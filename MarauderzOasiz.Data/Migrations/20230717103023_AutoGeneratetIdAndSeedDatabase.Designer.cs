@@ -4,6 +4,7 @@ using HustlerzOasiz.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HustlerzOasiz.Data.Migrations
 {
     [DbContext(typeof(HustlerzOasizDbContext))]
-    partial class HustlerzOasizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230717103023_AutoGeneratetIdAndSeedDatabase")]
+    partial class AutoGeneratetIdAndSeedDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

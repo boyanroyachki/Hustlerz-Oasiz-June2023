@@ -37,3 +37,17 @@ body {
     color: whitesmoke;
     background-color: darkslategrey;
 }
+.btn-primary {
+    background-color: #4caf50 !important; /*green*/
+    border-color: #4caf50 !important; /*green*/
+}
+.form-control {
+    background-color: darkslategray;
+    color: white;
+}
+.form-control:focus {
+    background-color: darkslategray;
+    color: white;
+    outline: none;
+    box-shadow: none;
+}
