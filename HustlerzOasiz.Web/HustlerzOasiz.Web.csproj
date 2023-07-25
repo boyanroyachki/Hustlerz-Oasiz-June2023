@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HustlerzOasiz.Common\HustlerzOasiz.Common.csproj" />
+    <ProjectReference Include="..\HustlerzOasiz.Services.Data\HustlerzOasiz.Services.Data.csproj" />
+    <ProjectReference Include="..\HustlerzOasiz.Web.Infrastructure\HustlerzOasiz.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\HustlerzOasiz.Web.ViewModels\HustlerzOasiz.Web.ViewModels.csproj" />
     <ProjectReference Include="..\MarauderzOasiz.Data.Models\HustlerzOasiz.Data.Models.csproj" />
     <ProjectReference Include="..\MarauderzOasiz.Data\HustlerzOasiz.Data.csproj" />

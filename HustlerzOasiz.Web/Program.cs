@@ -1,6 +1,9 @@
+using HustlerzOasiz.Services.Data.Interfaces;
+using HustlerzOasiz.Services.Data;
 using HustlerzOasiz.Web.Data;
 using MarauderzOasiz.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using HustlerzOasiz.Web.Infrastructure.Extensions;
 
 namespace HustlerzOasiz.Web
 {
@@ -14,6 +17,8 @@ namespace HustlerzOasiz.Web
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<HustlerzOasizDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            
 
             //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -30,6 +35,10 @@ namespace HustlerzOasiz.Web
 
             })
                 .AddEntityFrameworkStores<HustlerzOasizDbContext>();
+            //
+            builder.Services.AddApplicationServices(typeof(IJobService));
+
+            //
             builder.Services.AddControllersWithViews();
 
             WebApplication app = builder.Build();

@@ -1,16 +1,16 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -19,35 +19,60 @@ body {
     color: whitesmoke;
     font-weight: 700;
     line-height: .95;
-    
-
     background-image: url('/Images/WebPrjctBackground1.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed; /* This will fix the background image and content will scroll */
-
-
 }
+
 .navbar-brand {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
+
 .nabvar {
     color: whitesmoke;
     background-color: darkslategrey;
 }
+
 .btn-primary {
     background-color: #4caf50 !important; /*green*/
     border-color: #4caf50 !important; /*green*/
 }
+
 .form-control {
     background-color: darkslategray;
     color: white;
 }
-.form-control:focus {
-    background-color: darkslategray;
-    color: white;
-    outline: none;
-    box-shadow: none;
+
+    .form-control:focus {
+        background-color: darkslategray;
+        color: white;
+        outline: none;
+        box-shadow: none;
+    }
+
+.project_menu ul {
+    list-style: none;
+    padding: 0;
 }
+
+    .project_menu ul li {
+        margin-bottom: 10px; /* This controls the spacing between items, adjust as needed */
+    }
+
+        .project_menu ul li a {
+            text-decoration: none;
+            color: white; /* This changes the text color of the links, adjust as needed */
+            background-color: darkslategray; /* This changes the background color of the links, adjust as needed */
+            display: inline-block;
+            padding: 10px 20px; /* This adds some padding around the links, adjust as needed */
+            border-radius: 5px; /* This makes the corners of the links slightly rounded, adjust as needed */
+            transition: background-color 0.3s ease; /* This adds a smooth transition effect when the link background color changes */
+        }
+
+            .project_menu ul li a:hover {
+                background-color: #4a4a4a; /* This changes the background color of the links when hovered, adjust as needed */
+            }
+
