@@ -1,6 +1,6 @@
 ﻿using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Data;
-using HustlerzOasiz.Web.ViewModels.Jobs;
+using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
 using Microsoft.EntityFrameworkCore;
 

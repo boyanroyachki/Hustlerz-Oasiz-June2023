@@ -2,6 +2,7 @@
 using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using static HustlerzOasiz.Common.NotificationMessagesConstants;
 
 namespace HustlerzOasiz.Web.Controllers
 {
@@ -21,7 +22,8 @@ namespace HustlerzOasiz.Web.Controllers
             bool isJoined = await this.contractorService.ContractorExistsById(userId);
             if (isJoined)
             {
-                return BadRequest();
+                TempData[ErrorMessage] = "You are already a CONTRACTOR!";
+                return this.RedirectToAction("Index", "Home");
             }
             return View();
         }

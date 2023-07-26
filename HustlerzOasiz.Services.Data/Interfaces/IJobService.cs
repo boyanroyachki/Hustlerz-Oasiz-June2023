@@ -1,4 +1,4 @@
-﻿using HustlerzOasiz.Web.ViewModels.Jobs;
+﻿using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
 using System;
 using System.Collections.Generic;
