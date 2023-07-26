@@ -35,3 +35,4 @@ namespace MarauderzOasiz.Data.Models
         public virtual ICollection<Job> OwnedJobs { get; set; }
     }
 }
+

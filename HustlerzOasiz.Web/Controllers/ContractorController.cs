@@ -1,8 +1,10 @@
-﻿using HustlerzOasiz.Services.Data;
-using HustlerzOasiz.Services.Data.Interfaces;
+﻿using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Infrastructure;
+using HustlerzOasiz.Web.ViewModels.Contractor;
 using Microsoft.AspNetCore.Mvc;
+using static HustlerzOasiz.Services.Data.ContractorService;
 using static HustlerzOasiz.Common.NotificationMessagesConstants;
+using MarauderzOasiz.Data.Models;
 
 namespace HustlerzOasiz.Web.Controllers
 {
@@ -19,7 +21,7 @@ namespace HustlerzOasiz.Web.Controllers
         public async Task<IActionResult> Join()
         {
             string? userId = this.User.GetId();
-            bool isJoined = await this.contractorService.ContractorExistsById(userId);
+            bool isJoined = await this.contractorService.ContractorExistsByUserIdAsync(userId);
             if (isJoined)
             {
                 TempData[ErrorMessage] = "You are already a CONTRACTOR!";
@@ -27,5 +29,54 @@ namespace HustlerzOasiz.Web.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Join(JoinContractorsFormModel model)
+        {
+            string? userId = this.User.GetId();
+            bool isJoined = await this.contractorService.ContractorExistsByUserIdAsync(userId);
+
+			if (isJoined)
+			{
+				TempData[ErrorMessage] = "You are already a CONTRACTOR!";
+				return this.RedirectToAction("Index", "Home");
+			}
+			
+            bool isPhoneNumberTaken = await contractorService.ContractorExistsByPhoneNumberAsync(model.PhoneNumber);
+            bool isUsernameTaken = await contractorService.ContractorExistsByUsernameAsync(model.Username);
+            bool userHasAdoptedJobs = await contractorService.UserHasAdoptedJobsByUserIdAsync(userId);
+
+
+			if (isUsernameTaken)
+            {
+                ModelState.AddModelError(nameof(model.Username), "Username is taken already!");
+            }
+            if (isPhoneNumberTaken)
+            {
+				ModelState.AddModelError(nameof(model.PhoneNumber), "Contractor with the given Phone Number is already created!");
+			}
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+			try
+			{
+				await contractorService.Create(userId, model);
+			}
+			catch (Exception)
+			{
+				TempData[ErrorMessage] =
+					"There was an error while trying to log you as a Contractor. Please, try again! ";
+
+				return RedirectToAction("Index", "Home");
+			}
+
+			return RedirectToAction("Index", "Home");  //Will add changes if the user is a contractor soon
+
+
+		}
+
     }
 }
