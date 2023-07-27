@@ -1,0 +1,14 @@
+﻿@model PublishAJobViewModel
+@{
+    ViewData["Title"] = "Add Job";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_PublishAJobPartial" model="@Model" />
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}

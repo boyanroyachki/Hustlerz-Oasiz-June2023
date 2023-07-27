@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using static HustlerzOasiz.Services.Data.ContractorService;
 using static HustlerzOasiz.Common.NotificationMessagesConstants;
 using MarauderzOasiz.Data.Models;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace HustlerzOasiz.Web.Controllers
 {
@@ -36,47 +37,72 @@ namespace HustlerzOasiz.Web.Controllers
             string? userId = this.User.GetId();
             bool isJoined = await this.contractorService.ContractorExistsByUserIdAsync(userId);
 
-			if (isJoined)
-			{
-				TempData[ErrorMessage] = "You are already a CONTRACTOR!";
-				return this.RedirectToAction("Index", "Home");
-			}
-			
+            if (isJoined)
+            {
+                TempData[ErrorMessage] = "You are already a CONTRACTOR!";
+                return this.RedirectToAction("Index", "Home");
+            }
+
             bool isPhoneNumberTaken = await contractorService.ContractorExistsByPhoneNumberAsync(model.PhoneNumber);
             bool isUsernameTaken = await contractorService.ContractorExistsByUsernameAsync(model.Username);
             bool userHasAdoptedJobs = await contractorService.UserHasAdoptedJobsByUserIdAsync(userId);
 
 
-			if (isUsernameTaken)
+            if (isUsernameTaken)
             {
                 ModelState.AddModelError(nameof(model.Username), "Username is taken already!");
             }
             if (isPhoneNumberTaken)
             {
-				ModelState.AddModelError(nameof(model.PhoneNumber), "Contractor with the given Phone Number is already created!");
-			}
+                ModelState.AddModelError(nameof(model.PhoneNumber), "Contractor with the given Phone Number is already created!");
+            }
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-			try
-			{
-				await contractorService.Create(userId, model);
-			}
-			catch (Exception)
-			{
-				TempData[ErrorMessage] =
-					"There was an error while trying to log you as a Contractor. Please, try again! ";
+            try
+            {
+                await contractorService.Create(userId, model);
+            }
+            catch (Exception)
+            {
+                TempData[ErrorMessage] =
+                    "There was an error while trying to log you as a Contractor. Please, try again! ";
 
-				return RedirectToAction("Index", "Home");
-			}
+                return RedirectToAction("Index", "Home");
+            }
 
-			return RedirectToAction("Index", "Home");  //Will add changes if the user is a contractor soon
+            return RedirectToAction("Index", "Home");  //Will add changes if the user is a contractor soon
 
 
-		}
+        }
+
+        //public IActionResult MyAdoptedJobs()
+        //{
+        //    string? userId = this.User.GetId();
+        //    if (userId != null)
+        //    {
+        //        string contractorId = contractorService.GetContractorByUserIdAsync(userId).Id.ToString();
+        //        if (contractorId != null)
+        //        {
+        //            var adoptedJobs = contractorService.GetContractorsAdoptedJobsByContractorId(contractorId);
+        //            if (adoptedJobs == null)
+        //            {
+        //                TempData[ErrorMessage] = "You have adopted NO JOBS!";
+        //                return this.RedirectToAction("Index", "Home");
+        //            }
+        //            return View(adoptedJobs.ToList());
+
+        //        }
+
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    return RedirectToAction("Index", "Home");
+
+
+        //}
 
     }
 }

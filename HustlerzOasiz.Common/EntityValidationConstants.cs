@@ -28,7 +28,7 @@ namespace HustlerzOasiz.Common
             public const int DetailsMinLegth = 50;
             public const int DetailsMaxLength = 1000;
 
-            public const decimal MinPrice = 0;
+            public const int MinPrice = 0;
 
             public enum JobStatus
             {

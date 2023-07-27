@@ -1,0 +1,71 @@
+﻿@using MarauderzOasiz.Data.Models;
+@model List<Job>
+
+<div class="container">
+    <div class="row">
+        @if (Model.Any())
+        {
+            foreach (var job in Model)
+            {
+                <div class="col-md-4 job-card" style="display: none;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@job.Title</h5>
+                            <p class="card-text">
+                                <strong>Location:</strong> @job.Location <br />
+                                <strong>Details:</strong> @job.Details <br />
+                                <strong>Price:</strong> @job.Price <br />
+                                <strong>Status:</strong> @job.Status <br />
+                                <strong>Date Posted:</strong> @job.DatePosted.ToShortDateString()
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">No jobs available.</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.Any())
+        {
+            <div class="col-md-12 text-center mt-4">
+                <button id="prev" class="btn btn-primary">Previous</button>
+                <button id="next" class="btn btn-primary">Next</button>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            var cards = $(".job-card");
+            var currentCard = 0;
+
+            // Show the first card initially
+            $(cards[currentCard]).show();
+
+            $("#next").click(function() {
+                // Hide the current card and show the next one
+                $(cards[currentCard]).hide();
+                currentCard = (currentCard + 1) % cards.length;
+                $(cards[currentCard]).show();
+            });
+
+            $("#prev").click(function() {
+                // Hide the current card and show the previous one
+                $(cards[currentCard]).hide();
+                currentCard = (currentCard - 1 + cards.length) % cards.length;
+                $(cards[currentCard]).show();
+            });
+        });
+    </script>
+}

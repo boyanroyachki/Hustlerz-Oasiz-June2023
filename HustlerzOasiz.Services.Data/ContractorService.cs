@@ -4,6 +4,7 @@ using HustlerzOasiz.Web.ViewModels.Contractor;
 using MarauderzOasiz.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace HustlerzOasiz.Services.Data
 {
     public class ContractorService : IContractorService
@@ -38,29 +39,29 @@ namespace HustlerzOasiz.Services.Data
 		//    }
 		//    return null;
 		//}
-		public async Task<ICollection<Job>> GetContractorsAdoptedJobsByContractorIdAsync(string contractorId)
-		{
-			// First, find the Contractor by the provided Id.
-			Contractor contractor = await this.data.Contractors.FirstOrDefaultAsync(c => c.Id.ToString() == contractorId);
+		//public  ICollection<Job> GetContractorsAdoptedJobsByContractorId(string contractorId)
+		//{
+		//	// First, find the Contractor by the provided Id.
+		//	Contractor contractor =  this.data.Contractors.FirstOrDefault(c => c.Id.ToString() == contractorId);
 
-			if (contractor == null)
-			{
-				// If no Contractor was found, return null or handle it as you see fit.
-				return null;
-			}
+		//	if (contractor == null)
+		//	{
+		//		// If no Contractor was found, return null or handle it as you see fit.
+		//		return null;
+		//	}
 
-			// Find the User linked to this Contractor.
-			AppUser user = await this.data.Users.FirstOrDefaultAsync(u => u.Id.ToString() == contractor.UserId.ToString());
+		//	// Find the User linked to this Contractor.
+		//	AppUser user =  this.data.Users.FirstOrDefault(u => u.Id.ToString() == contractor.UserId.ToString());
 
-			if (user == null)
-			{
-				// If no User was found, return null or handle it as you see fit.
-				return null;
-			}
+		//	if (user == null)
+		//	{
+		//		// If no User was found, return null or handle it as you see fit.
+		//		return null;
+		//	}
 
-			// If everything is fine, return the AdoptedJobs of the linked User.
-			return user.AdoptedJobs.ToList();
-		}
+		//	// If everything is fine, return the AdoptedJobs of the linked User.
+		//	return user.AdoptedJobs.ToList();
+		//}
 
 
 		public async Task<bool> UserHasAdoptedJobsByUserIdAsync(string userId)
@@ -77,10 +78,6 @@ namespace HustlerzOasiz.Services.Data
 
         }
 
-        public Task<ICollection<Job>> GetUsersAdoptedJobsByIdAsync(string userId)
-        {
-            throw new NotImplementedException();
-        }
 
 		public async Task Create(string userId, JoinContractorsFormModel model)
 		{
@@ -93,5 +90,22 @@ namespace HustlerzOasiz.Services.Data
 			await data.AddAsync(contractor);
 			await data.SaveChangesAsync();
 		}
+
+		public async Task<AppUser> GetUserByUserIdAsync(string userId)
+		{
+			AppUser user = await this.data.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+			return user;
+		}
+
+		public async Task<Contractor> GetContractorByUserIdAsync(string userId)
+		{
+			if (await ContractorExistsByUserIdAsync(userId))
+			{
+				var contractor = await this.data.Contractors.FirstOrDefaultAsync(c => c.UserId.ToString() == userId);
+				return contractor;
+			}
+			return null;
+        }
+
     }
 }
