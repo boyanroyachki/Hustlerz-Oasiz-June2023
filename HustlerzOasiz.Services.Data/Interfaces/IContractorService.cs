@@ -12,18 +12,16 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task<bool> UserHasAdoptedJobsByUserIdAsync(string userId);
 
-        //Task<ICollection<Job>> GetUsersAdoptedJobsByIdAsync(string userId);
-
         Task<bool> ContractorExistsByUsernameAsync(string userName);
-
-        //ICollection<Job> GetContractorsAdoptedJobsByContractorId(string contractorId);
 
         Task Create(string userId, JoinContractorsFormModel model);
 
         Task<Contractor> GetContractorByUserIdAsync(string userId);
 
         Task<string> GetContractorIdByUserIdAsync(string userId);
+        Contractor GetContractorByContractorIdAsync(string contractorId);
 
 
-    }
+
+	}
 }

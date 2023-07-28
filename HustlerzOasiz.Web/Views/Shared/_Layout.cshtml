@@ -25,7 +25,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Job" asp-action="Index">Jobs</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Job" asp-action="BrowseJobs">Jobs</a>
                         </li>
                         @if (this.User.Identity?.IsAuthenticated ?? false)
                         {

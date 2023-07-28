@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Contracts;
 using static HustlerzOasiz.Common.EntityValidationConstants.Contractor;
 
 namespace MarauderzOasiz.Data.Models

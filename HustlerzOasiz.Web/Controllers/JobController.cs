@@ -27,14 +27,14 @@ namespace HustlerzOasiz.Web.Controllers
         public async Task<IActionResult> Index()
         {
            return View();
-        }
+        }  //done and working
 
         [HttpGet]
         public async Task<IActionResult> PublishAjob()
         {
-            bool isAgent =
+            bool isContractor =
                 await contractorService.ContractorExistsByUserIdAsync(User.GetId()!);
-            if (!isAgent)
+            if (!isContractor)
             {
                 this.TempData[ErrorMessage] = "You must be a Contractor to post Jobs!";
 
@@ -56,17 +56,18 @@ namespace HustlerzOasiz.Web.Controllers
                 return RedirectToAction("Index", "Home");
                 
             }
-        }
+        }   //done and working
         [HttpPost]
         public async Task<IActionResult> PublishAJob(PublishAJobViewModel model)
         {
+
             bool isContractor =
                 await contractorService.ContractorExistsByUserIdAsync(User.GetId()!);
             if (!isContractor)
             {
-                TempData[ErrorMessage] = "You must become an agent in order to add new houses!";
+                TempData[ErrorMessage] = "You must be a Contractor to post Jobs!";
 
-                return RedirectToAction("Become", "Agent");
+                return RedirectToAction("Join", "Contractor");
             }
 
             bool categoryExists =
@@ -89,8 +90,8 @@ namespace HustlerzOasiz.Web.Controllers
                 string? contractorId =
                     await contractorService.GetContractorIdByUserIdAsync(User.GetId()!);
 
-                
-                    await jobService.PublishJobAsync(model, contractorId!);
+
+                await jobService.PublishJobAsync(model, contractorId!);
 
                 TempData[SuccessMessage] = "Job was published.";
                 return RedirectToAction("Index", "Home");
@@ -101,70 +102,9 @@ namespace HustlerzOasiz.Web.Controllers
                 model.Categories = await categoryService.GetCategoriesAsync();
 
                 return View(model);
+
             }
-        }
-
-
-        //[HttpGet]
-        //public async Task<IActionResult> PublishAJob()
-        //{
-        //    bool isContractor = await contractorService.ContractorExistsByUsernameAsync(this.User.GetId());
-        //    if (!isContractor)
-        //    {
-        //        this.TempData[ErrorMessage] = "Only Contractors can post Jobs.";
-        //        return RedirectToAction("Join", "Contractor");
-        //    }
-
-        //    var categories = await this.categoryService.GetCategoriesAsync();
-        //    var model = new PublishAJobViewModel
-        //    {
-        //        Categories = categories.Select(c => new ChooseACategoryFormModel
-        //        {
-        //            Id = c.Id,
-        //            Name = c.Name,
-        //            Description = c.Description
-        //        })
-        //    };
-
-        //    return View(model);
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> PublishAJob(PublishAJobViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        model.Categories = await this.categoryService.GetCategoriesAsync();
-        //        return View(model);
-        //    }
-
-        //    var job = new Job
-        //    {
-        //        Title = model.Title,
-        //        Location = model.Location,
-        //        Details = model.Details,
-        //        Price = model.Price,
-        //        CategoryId = model.CategoryId,
-        //        ContractorId = model.ContractorId,
-        //        Deadline = model.Deadline,
-        //        ImageURLs = model.ImageURLs
-        //    };
-
-        //    await /*this.jobService.Create(job);*/
-
-        //    return RedirectToAction("Index", "Home");
-        //}
-
-
-        //[HttpPost]
-        //public ActionResult<Job> PostProduct(Job job)
-        //{
-        //    job = jobService.CreateJob(job.Title, job.Details, job.Price, job.);
-
-        //    return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
-        //}
-
-
-
+        }   //done and working
 
         //try
         public  IActionResult BrowseJobs(int? categoryId = null)
@@ -172,6 +112,15 @@ namespace HustlerzOasiz.Web.Controllers
             var jobs = this.jobService.GetJobsByCategory(categoryId);
 
             return this.View(jobs);
+        }  //need to add contractor 
+        public IActionResult Detail(Guid id)
+        {
+            var wantedJob = jobService.GetById(id.ToString());
+            if (wantedJob != null)
+            {
+                return this.View(wantedJob);
+            }
+            return BadRequest(); //not done
         }
         
 

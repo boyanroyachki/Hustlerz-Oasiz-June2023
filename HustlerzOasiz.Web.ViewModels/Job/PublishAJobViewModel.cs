@@ -6,6 +6,11 @@ namespace HustlerzOasiz.Web.ViewModels.Job
 {
     public class PublishAJobViewModel
     {
+        
+        public PublishAJobViewModel()
+        {
+                
+        }
         [Required]
         [MinLength(TitleMinLength)]
         [MaxLength(TitleMaxLength)]

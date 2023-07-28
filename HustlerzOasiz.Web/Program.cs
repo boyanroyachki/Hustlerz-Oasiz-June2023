@@ -70,8 +70,7 @@ namespace HustlerzOasiz.Web
             app.UseAuthentication();  //1st
             app.UseAuthorization();  //2st
 
-            app.MapControllerRoute(name: "default",
-            pattern: "{controller=Home}/{action=Start}"); //could add custom route here
+            app.MapDefaultControllerRoute(); //could add custom route here
             app.MapRazorPages();
 
             app.Run();

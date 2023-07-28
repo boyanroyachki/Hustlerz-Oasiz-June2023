@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HustlerzOasiz.Common\HustlerzOasiz.Common.csproj" />
+    <ProjectReference Include="..\MarauderzOasiz.Data.Models\HustlerzOasiz.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

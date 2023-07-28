@@ -10,23 +10,11 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 {
     public interface IJobService
     {
-        Task<IEnumerable<JobsIndexViewModel>> LatestJobsAsync();
-
-        //List<Job> GetAllJobsAsync();
-
-        Job GetById(int id);
-
-        Job CreateJob(string title, string details, decimal price, int categoryId, string contractorId);
-
-        void EditJob(int id, Job product);
-
-        void EditJobPartially(int id, Job product);
-
-        Job DeleteJob(int id);
-
-        Task PublishJobAsync(PublishAJobViewModel model, string contractorId);
-
-        List<Job> GetJobsByCategory(int? categoryId = null);
+        Task<IEnumerable<JobsIndexViewModel>> LatestJobsAsync(); //
+        Task<IEnumerable<Job>> GetAllJobsAsync(); //
+        Job GetById(string id); //
+        Task PublishJobAsync(PublishAJobViewModel model, string contractorId); //
+        List<Job> GetJobsByCategory(int? categoryId = null); //
 
         
 
