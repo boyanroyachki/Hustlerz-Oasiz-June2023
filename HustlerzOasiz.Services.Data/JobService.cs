@@ -2,6 +2,7 @@
 using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HustlerzOasiz.Services.Data
@@ -43,9 +44,9 @@ namespace HustlerzOasiz.Services.Data
             throw new NotImplementedException();
         }
 
-        public List<Job> GetAllJobs()
+        public async Task<IEnumerable<Job>> GetAllJobsAsync()
         {
-            throw new NotImplementedException();
+            return await data.Jobs.ToArrayAsync();
         }
 
         public Job GetById(int id)
@@ -68,9 +69,40 @@ namespace HustlerzOasiz.Services.Data
             return latestJobs;
         }
 
+        public async Task PublishJobAsync(PublishAJobViewModel model, string contractorId)
+        {
+            Job job = new Job()
+            {
+                Title = model.Title,
+                Location = model.Location,
+                Details = model.Details,
+                Price = (decimal)model.Price,
+                DatePosted = DateTime.Now,
+                CategoryId = model.CategoryId,
+                ContractorId = Guid.Parse(contractorId),
+                Deadline = model.Deadline,
+                ImageURLs = model.ImageURLs
+            };
+
+            await data.Jobs.AddAsync(job);
+            await data.SaveChangesAsync();
+        }
+
+
+        //try
        
 
+        public List<Job> GetJobsByCategory(int? categoryId = null)
+        {
+            IQueryable<Job> jobsQuery = this.data.Jobs;
 
+            if (categoryId.HasValue)
+            {
+                jobsQuery = jobsQuery.Where(job => job.CategoryId == categoryId.Value);
+            }
+
+            return jobsQuery.ToList();
+        }
 
 
     }

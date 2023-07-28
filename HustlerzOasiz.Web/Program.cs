@@ -4,6 +4,8 @@ using HustlerzOasiz.Web.Data;
 using MarauderzOasiz.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using HustlerzOasiz.Web.Infrastructure.Extensions;
+using HustlerzOasiz.Web.Infrastructure.CustomModelBinders;
+using Microsoft.AspNetCore.Builder;
 
 namespace HustlerzOasiz.Web
 {
@@ -39,7 +41,11 @@ namespace HustlerzOasiz.Web
             builder.Services.AddApplicationServices(typeof(IJobService));
 
             //
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddMvcOptions(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new CustomDecimalBinderProvider());
+            });
+            
 
             WebApplication app = builder.Build();
 
@@ -64,7 +70,8 @@ namespace HustlerzOasiz.Web
             app.UseAuthentication();  //1st
             app.UseAuthorization();  //2st
 
-            app.MapDefaultControllerRoute(); //could add custom route here
+            app.MapControllerRoute(name: "default",
+            pattern: "{controller=Home}/{action=Start}"); //could add custom route here
             app.MapRazorPages();
 
             app.Run();

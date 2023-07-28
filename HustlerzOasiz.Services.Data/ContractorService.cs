@@ -107,5 +107,15 @@ namespace HustlerzOasiz.Services.Data
 			return null;
         }
 
+        public async Task<string> GetContractorIdByUserIdAsync(string userId)
+        {
+			Contractor? contractor = await data.Contractors.FirstOrDefaultAsync(c => c.UserId.ToString() == userId);
+			if (contractor == null)
+			{
+				return null;
+			}
+
+			return contractor.Id.ToString();
+        }
     }
 }

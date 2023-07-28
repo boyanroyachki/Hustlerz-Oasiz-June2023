@@ -1,31 +1,33 @@
 ﻿@model PublishAJobViewModel
 
+
 <form asp-controller="Job" asp-action="PublishAJob" method="post">
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" placeholder="Enter job title..." />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="Location"></label>
         <input asp-for="Location" class="form-control" placeholder="Enter job location..." />
         <span asp-validation-for="Location" class="text-danger"></span>
     </div>
 
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="Details"></label>
-        <textarea asp-for="Details" class="form-control" placeholder="Enter job details..."></textarea>
+        <textarea asp-for="Details" class="form-control" style="width: 100%; height: 150px;" placeholder="Enter job details..."></textarea>
         <span asp-validation-for="Details" class="text-danger"></span>
     </div>
 
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="Price"></label>
-        <input id="price" type="text" class="form-control" placeholder="Enter job price..." />
+        <input id="priceDisplay" type="text" class="form-control" placeholder="Enter job price..." />
+        <input asp-for="Price" id="price" type="hidden" />
         <span id="price-error" class="text-danger"></span>
     </div>
 
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="CategoryId"></label>
         <select asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))" class="form-control">
             <option value="">-- Select Category --</option>
@@ -33,13 +35,13 @@
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="Deadline"></label>
         <input asp-for="Deadline" type="date" class="form-control" placeholder="Enter deadline (optional)..." />
         <span asp-validation-for="Deadline" class="text-danger"></span>
     </div>
 
-    <div class="form-group my-2" style="max-width: 80%; margin-left: auto; margin-right: auto;">
+    <div class="form-group my-2" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <label asp-for="ImageURLs"></label>
         <input asp-for="ImageURLs" class="form-control" placeholder="Enter image URL (optional)..." />
         <span asp-validation-for="ImageURLs" class="text-danger"></span>
@@ -52,13 +54,16 @@
     </div>
 </form>
 
+
+
 <script>
-    document.getElementById('price').addEventListener('blur', function(e) {
+    document.getElementById('priceDisplay').addEventListener('blur', function (e) {
         let value = parseFloat(e.target.value);
         if (isNaN(value)) {
             document.getElementById('price-error').textContent = 'Please enter a valid price.';
             e.target.value = '';
         } else {
+            document.getElementById('price').value = value.toFixed(2); // Store the actual decimal value in hidden field
             e.target.value = '$' + value.toFixed(2);
             document.getElementById('price-error').textContent = '';
         }

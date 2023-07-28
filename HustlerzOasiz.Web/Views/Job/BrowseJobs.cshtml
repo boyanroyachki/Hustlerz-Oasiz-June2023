@@ -1,0 +1,35 @@
+﻿@using MarauderzOasiz.Data.Models;
+@model IEnumerable<Job>
+
+<h1>Jobs</h1>
+
+<form method="get">
+    <select name="categoryId">
+        <option value="">All Categories</option>
+        <!-- Replace the following line with your actual list of categories -->
+        <option value="1">Ammonition</option>
+        <option value="2">Protection</option>
+        <option value="3">Special Missions</option>
+        <option value="4">Cyber warfare or/and Cyber security</option>
+        
+        <!-- etc -->
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<div class="job-container">
+    @foreach (var job in Model)
+    {
+        <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="job-box">
+            <div>
+                <h2>@job.Title</h2>
+                <p>@job.Location</p>
+                <p>@job.Details</p>
+                <p>@job.Price $</p>
+                <p>Date posted: @job.DatePosted</p>
+                <p>Deadline: @job.Deadline</p>
+                <!-- etc -->
+            </div>
+        </a>
+    }
+</div>

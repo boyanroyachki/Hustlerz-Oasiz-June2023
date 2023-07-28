@@ -26,8 +26,7 @@ namespace HustlerzOasiz.Web.Controllers
         
         public async Task<IActionResult> Index()
         {
-            IEnumerable<JobsIndexViewModel> viewModel = await this.jobService.LatestJobsAsync();
-            return View(viewModel);
+           return View();
         }
 
         [HttpGet]
@@ -56,6 +55,52 @@ namespace HustlerzOasiz.Web.Controllers
                 //return GeneralError();
                 return RedirectToAction("Index", "Home");
                 
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> PublishAJob(PublishAJobViewModel model)
+        {
+            bool isContractor =
+                await contractorService.ContractorExistsByUserIdAsync(User.GetId()!);
+            if (!isContractor)
+            {
+                TempData[ErrorMessage] = "You must become an agent in order to add new houses!";
+
+                return RedirectToAction("Become", "Agent");
+            }
+
+            bool categoryExists =
+                await categoryService.ExistsByIdAsync(model.CategoryId);
+            if (!categoryExists)
+            {
+                // Adding model error to ModelState automatically makes ModelState Invalid
+                ModelState.AddModelError(nameof(model.CategoryId), "Category does not exist!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await categoryService.GetCategoriesAsync();
+
+                return View(model);
+            }
+
+            try
+            {
+                string? contractorId =
+                    await contractorService.GetContractorIdByUserIdAsync(User.GetId()!);
+
+                
+                    await jobService.PublishJobAsync(model, contractorId!);
+
+                TempData[SuccessMessage] = "Job was published.";
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while trying to add the new Job! Please try again later or contact administrator!");
+                model.Categories = await categoryService.GetCategoriesAsync();
+
+                return View(model);
             }
         }
 
@@ -117,6 +162,20 @@ namespace HustlerzOasiz.Web.Controllers
 
         //    return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         //}
+
+
+
+
+        //try
+        public  IActionResult BrowseJobs(int? categoryId = null)
+        {
+            var jobs = this.jobService.GetJobsByCategory(categoryId);
+
+            return this.View(jobs);
+        }
+        
+
+
 
     }
 }

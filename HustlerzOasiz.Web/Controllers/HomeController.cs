@@ -10,6 +10,25 @@ namespace HustlerzOasiz.Web.Controllers
     {
         public HomeController()
         {}
+        [AllowAnonymous]
+        public IActionResult Start()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Start(string password)
+        {
+            // Replace "YourValidPassword" with the actual valid password.
+            string validPassword = "Tarantula22";
+
+            if (password == validPassword)
+            {
+                // Password is correct, redirect to the main page.
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
 
         [AllowAnonymous]
         public IActionResult Index()

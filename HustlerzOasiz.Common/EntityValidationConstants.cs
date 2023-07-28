@@ -22,7 +22,7 @@ namespace HustlerzOasiz.Common
             public const int TitleMinLength = 2;
             public const int TitleMaxLength = 50;
 
-            public const int LocationMinLength = 30;
+            public const int LocationMinLength = 5;
             public const int LocationMaxLength = 150;
 
             public const int DetailsMinLegth = 50;

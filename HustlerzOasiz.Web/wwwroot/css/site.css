@@ -75,4 +75,24 @@ body {
             .project_menu ul li a:hover {
                 background-color: #4a4a4a; /* This changes the background color of the links when hovered, adjust as needed */
             }
+.job-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.job-box {
+    display: block;
+    width: calc(33% - 20px); /* adjust as needed */
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+    .job-box:hover {
+        background-color: #f0f0f0; /* adjust as needed */
+    }
 

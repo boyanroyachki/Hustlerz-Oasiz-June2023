@@ -22,8 +22,7 @@ namespace HustlerzOasiz.Web.ViewModels.Job
         public string Details { get; set; } = null!;
 
         [Required]
-        [MinLength(MinPrice)]
-        [Display(Name = "Price in EURO")]
+        [Display(Name = "Price in USD")]
         public decimal Price { get; set; }
 
         [Required]

@@ -16,6 +16,13 @@ namespace HustlerzOasiz.Services.Data
         private readonly HustlerzOasizDbContext data;
 
         public CategoryService(HustlerzOasizDbContext data) => this.data = data;
+
+        public async Task<bool> ExistsByIdAsync(int id)
+        {
+            bool result = await data.Categories.AnyAsync(c => c.Id == id);
+            return result;
+        }
+
         public async Task<IEnumerable<ChooseACategoryFormModel>> GetCategoriesAsync()
         {
             var categories = await data.Categories.Select(c => new ChooseACategoryFormModel()

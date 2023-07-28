@@ -12,7 +12,7 @@ namespace HustlerzOasiz.Services.Data.Interfaces
     {
         Task<IEnumerable<JobsIndexViewModel>> LatestJobsAsync();
 
-        List<Job> GetAllJobs();
+        //List<Job> GetAllJobsAsync();
 
         Job GetById(int id);
 
@@ -23,6 +23,12 @@ namespace HustlerzOasiz.Services.Data.Interfaces
         void EditJobPartially(int id, Job product);
 
         Job DeleteJob(int id);
+
+        Task PublishJobAsync(PublishAJobViewModel model, string contractorId);
+
+        List<Job> GetJobsByCategory(int? categoryId = null);
+
+        
 
     }
 }

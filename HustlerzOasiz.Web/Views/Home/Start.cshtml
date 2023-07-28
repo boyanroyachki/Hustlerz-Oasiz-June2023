@@ -1,0 +1,29 @@
+﻿@{
+ViewData["Title"] = "Welcome";
+    Layout = null;
+}
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: "Algerian", sans-serif;
+    }
+
+    .password-box {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+</style>
+<div class="text-center">
+    <h2 class="display-4">Welcome to HUSTLERZ OASIZ</h2>
+    <p>Please enter the password to access the site:</p>
+</div>
+
+<form method="post" class="password-box">
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
