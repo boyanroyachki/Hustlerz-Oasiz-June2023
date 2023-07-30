@@ -1,6 +1,7 @@
 ﻿using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Infrastructure;
 using HustlerzOasiz.Web.ViewModels.Job;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static HustlerzOasiz.Common.NotificationMessagesConstants;
 
@@ -107,6 +108,7 @@ namespace HustlerzOasiz.Web.Controllers
         }   //done and working
 
         //try
+        [AllowAnonymous]
         public  IActionResult BrowseJobs(int? categoryId = null)
         {
             var jobs = this.jobService.GetJobsByCategory(categoryId);
@@ -194,6 +196,20 @@ namespace HustlerzOasiz.Web.Controllers
                 return this.View(model);
             }
             return this.RedirectToAction("Details", "Job", new {id});
+        }
+
+        public IActionResult MyJobs()
+        {
+            string userId = this.User.GetId()!;
+
+            var jobs = this.jobService.GetUsersJobsByUserIdAsync(userId);
+
+            if (jobs == null || jobs.Count() < 1)
+            {
+                this.TempData[ErrorMessage] = "You have not adopted any jobs!";
+                return RedirectToAction("BrowseJobs", "Job");
+            }
+            return View(jobs);
         }
 
 

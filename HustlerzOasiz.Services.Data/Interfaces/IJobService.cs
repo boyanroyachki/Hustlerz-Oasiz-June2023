@@ -26,6 +26,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task EditJobByJobIdAndJobFormMode(string jobId, JobFormModel model);
 
+        IEnumerable<Job> GetUsersJobsByUserIdAsync(string userId);    
+
 
 
 

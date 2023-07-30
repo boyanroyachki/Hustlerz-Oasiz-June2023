@@ -126,7 +126,11 @@ namespace HustlerzOasiz.Services.Data
 			await this.data.SaveChangesAsync();
 		}
 
+		public  IEnumerable<Job> GetUsersJobsByUserIdAsync(string userId)
+		{
+			AppUser user =  this.data.Users.First(u => u.Id.ToString() == userId);
 
-		
+			return  user.AdoptedJobs.ToArray();
+		}
 	}
 }
