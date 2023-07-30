@@ -1,16 +1,13 @@
-﻿using HustlerzOasiz.Services.Data;
-using HustlerzOasiz.Services.Data.Interfaces;
+﻿using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Infrastructure;
-using HustlerzOasiz.Web.ViewModels.Category;
 using HustlerzOasiz.Web.ViewModels.Job;
-using MarauderzOasiz.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using static HustlerzOasiz.Common.NotificationMessagesConstants;
 
 namespace HustlerzOasiz.Web.Controllers
 {
-     
-    public class JobController : BaseController
+
+	public class JobController : BaseController
     {
         private readonly IJobService jobService;
         private readonly ICategoryService categoryService;
@@ -73,6 +70,7 @@ namespace HustlerzOasiz.Web.Controllers
 
             bool categoryExists =
                 await categoryService.ExistsByIdAsync(model.CategoryId);
+
             if (!categoryExists)
             {
                 // Adding model error to ModelState automatically makes ModelState Invalid
@@ -103,6 +101,7 @@ namespace HustlerzOasiz.Web.Controllers
                 model.Categories = await categoryService.GetCategoriesAsync();
 
                 return View(model);
+                //return BadRequest();
 
             }
         }   //done and working
@@ -196,9 +195,12 @@ namespace HustlerzOasiz.Web.Controllers
             }
             return this.RedirectToAction("Details", "Job", new {id});
         }
-        
+
+
+		
 
 
 
-    }
+
+	}
 }

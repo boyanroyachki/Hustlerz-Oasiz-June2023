@@ -47,7 +47,7 @@ namespace HustlerzOasiz.Services.Data
 				Title = model.Title,
 				Location = model.Location,
 				Details = model.Details,
-				Price = (decimal)model.Price,
+				Price = model.Price,
 				DatePosted = DateTime.Now,
 				CategoryId = model.CategoryId,
 				ContractorId = Guid.Parse(contractorId),
@@ -125,5 +125,8 @@ namespace HustlerzOasiz.Services.Data
 
 			await this.data.SaveChangesAsync();
 		}
+
+
+		
 	}
 }
