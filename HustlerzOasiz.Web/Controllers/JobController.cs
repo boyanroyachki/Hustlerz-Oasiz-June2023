@@ -154,6 +154,8 @@ namespace HustlerzOasiz.Web.Controllers
 
             JobFormModel jobFormModel = await this.jobService.GetJobForEditAsync(id);
 
+            jobFormModel.Categories = await this.categoryService.GetCategoriesAsync();
+
             return View(jobFormModel);
             
         }

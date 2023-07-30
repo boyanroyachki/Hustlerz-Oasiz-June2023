@@ -1,4 +1,5 @@
-﻿using MarauderzOasiz.Data.Models;
+﻿using HustlerzOasiz.Web.ViewModels.Category;
+using MarauderzOasiz.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using static HustlerzOasiz.Common.EntityValidationConstants.Job;
 
@@ -48,7 +49,9 @@ namespace HustlerzOasiz.Web.ViewModels.Job
 
 		public string? ImageURLs { get; set; }
 
-	
+		public IEnumerable<ChooseACategoryFormModel> Categories { get; set; } = new HashSet<ChooseACategoryFormModel>();
+
+
 
 	}
 }
