@@ -24,6 +24,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task<bool> IsContractorWithIdOwnerOfJobAsync(string jobId, string contractorId);
 
+        Task EditJobByJobIdAndJobFormMode(string jobId, JobFormModel model);
+
 
 
 

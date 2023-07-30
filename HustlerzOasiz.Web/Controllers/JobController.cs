@@ -114,6 +114,7 @@ namespace HustlerzOasiz.Web.Controllers
 
             return this.View(jobs);
         }  //need to add contractor 
+
         //public IActionResult Detail(Guid id)
         //{
         //    var wantedJob = jobService.GetByIdAsync(id.ToString());
@@ -152,12 +153,48 @@ namespace HustlerzOasiz.Web.Controllers
                 return RedirectToAction("MyJobs", "Job");
             }
 
-            JobFormModel jobFormModel = await this.jobService.GetJobForEditAsync(id);
+            try
+            {
+				JobFormModel jobFormModel = await this.jobService.GetJobForEditAsync(id);
 
-            jobFormModel.Categories = await this.categoryService.GetCategoriesAsync();
+				jobFormModel.Categories = await this.categoryService.GetCategoriesAsync();
 
-            return View(jobFormModel);
+				return View(jobFormModel);
+			}
+            catch (Exception)
+            {
+                this.TempData[ErrorMessage] = "Unexpected error accured!";
+
+                return this.RedirectToAction("BrowseJobs", "Job");
+            }
+
             
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, JobFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await this.categoryService.GetCategoriesAsync();
+
+                return this.View(model);
+            }
+
+            try
+            {
+                await this.jobService.EditJobByJobIdAndJobFormMode(id, model);
+            }
+            catch (Exception)
+            {
+
+                this.ModelState.AddModelError(string.Empty, "Unexpected error accured while trying to edit the Job!");
+                model.Categories =await this.categoryService.GetCategoriesAsync();
+               
+                return this.View(model);
+            }
+            return this.RedirectToAction("Details", "Job", new {id});
         }
         
 

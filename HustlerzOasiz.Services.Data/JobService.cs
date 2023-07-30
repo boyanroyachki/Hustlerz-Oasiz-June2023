@@ -108,5 +108,22 @@ namespace HustlerzOasiz.Services.Data
 
 			return (job.ContractorId.ToString() != contractorId);  //just for better understanding
 		}
+
+		public async Task EditJobByJobIdAndJobFormMode(string jobId, JobFormModel model)
+		{
+			Job job = await this.data.Jobs.Where(j => j.Status == "Active").FirstAsync(j => j.Id.ToString() == jobId);	
+
+			job.Title = model.Title; //
+			job.Location = model.Location; //
+			job.Details = model.Details; //
+			job.Deadline = model.Deadline;
+			job.CategoryId = model.CategoryId; //
+			job.ImageURLs = model.ImageURLs;
+			job.Price = model.Price; //
+			job.Status = model.Status;
+			job.DatePosted = model.DatePosted;
+
+			await this.data.SaveChangesAsync();
+		}
 	}
 }
