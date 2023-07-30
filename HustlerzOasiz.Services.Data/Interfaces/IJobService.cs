@@ -12,11 +12,20 @@ namespace HustlerzOasiz.Services.Data.Interfaces
     {
         Task<IEnumerable<JobsIndexViewModel>> LatestJobsAsync(); //
         Task<IEnumerable<Job>> GetAllJobsAsync(); //
-        Job GetById(string id); //
+        Job GetByIdAsync(string id); //
         Task PublishJobAsync(PublishAJobViewModel model, string contractorId); //
         List<Job> GetJobsByCategory(int? categoryId = null); //
 
-        
+        Task<bool> JobExistsByIdAsync(string id); //
 
-    }
+
+        //not done
+        Task<JobFormModel> GetJobForEditAsync(string jobId);
+
+        Task<bool> IsContractorWithIdOwnerOfJobAsync(string jobId, string contractorId);
+
+
+
+
+	}
 }

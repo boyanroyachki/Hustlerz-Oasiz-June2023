@@ -6,10 +6,10 @@ namespace HustlerzOasiz.Web.ViewModels.Job
 {
     public class PublishAJobViewModel
     {
-        
+
         public PublishAJobViewModel()
         {
-                
+
         }
         [Required]
         [MinLength(TitleMinLength)]
@@ -30,6 +30,9 @@ namespace HustlerzOasiz.Web.ViewModels.Job
         [Display(Name = "Price in USD")]
         public decimal Price { get; set; }
 
+        [Required]                   //not done yet
+        public string Status { get; set; } = null!;
+
         [Required]
         public int CategoryId { get; set; }
 
@@ -41,5 +44,25 @@ namespace HustlerzOasiz.Web.ViewModels.Job
         public string? ImageURLs { get; set; } //optional
 
         public IEnumerable<ChooseACategoryFormModel> Categories { get; set; } = new HashSet<ChooseACategoryFormModel>();
+
+        public void ChangeStatus(string status)
+        {
+            if (status == "Completed")
+            {
+                Status = JobStatus.Completed.ToString();
+            }
+            else if (status == "Failed")
+            {
+                Status = JobStatus.Failed.ToString();
+            }
+            else if (status == "Quited")
+            {
+                Status = JobStatus.Quited.ToString();
+            }
+            else if (status == "Active")
+            {
+                Status = JobStatus.Active.ToString();
+            }
+        }
     }
 }

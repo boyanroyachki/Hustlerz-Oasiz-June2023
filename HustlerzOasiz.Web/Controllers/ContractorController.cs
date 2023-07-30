@@ -27,8 +27,9 @@ namespace HustlerzOasiz.Web.Controllers
             {
                 TempData[ErrorMessage] = "You are already a CONTRACTOR!";
 				return this.RedirectToAction("Index", "Home");
-                //return BadRequest();
-                //return Ok();
+                //return RedirectToAction("Join");
+				//return BadRequest();
+				//return Ok();
 			}
             return View();
         }  //done and working
@@ -43,8 +44,9 @@ namespace HustlerzOasiz.Web.Controllers
             {
                 TempData[ErrorMessage] = "You are already a CONTRACTOR!";
 				return this.RedirectToAction("Index", "Home");
-                //return BadRequest();
-                //return Ok();
+				//return RedirectToAction();
+				//return BadRequest();
+				//return Ok();
 			}
 
             //declare closest to where you will use them

@@ -16,6 +16,7 @@ namespace HustlerzOasiz.Web.Controllers
         private readonly ICategoryService categoryService;
         private readonly IContractorService contractorService;
 
+        //not a problem to inject all services
         public JobController(IJobService jobService, ICategoryService categoryService, IContractorService contractorService)
         {
             this.jobService = jobService;
@@ -113,14 +114,48 @@ namespace HustlerzOasiz.Web.Controllers
 
             return this.View(jobs);
         }  //need to add contractor 
-        public IActionResult Detail(Guid id)
+        //public IActionResult Detail(Guid id)
+        //{
+        //    var wantedJob = jobService.GetByIdAsync(id.ToString());
+        //    if (wantedJob != null)
+        //    {
+        //        return this.View(wantedJob);
+        //    }
+        //    return BadRequest(); //not done
+        //}  
+        
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
-            var wantedJob = jobService.GetById(id.ToString());
-            if (wantedJob != null)
+            bool jobExists = await this.jobService.JobExistsByIdAsync(id);
+
+            if (!jobExists)
             {
-                return this.View(wantedJob);
+                this.TempData[ErrorMessage] = "Job with the given ID does not exist!";
+                return RedirectToAction("BrowseJobs", "Job");
             }
-            return BadRequest(); //not done
+            bool isUserContractor = await this.contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
+
+            if (!isUserContractor)
+            {
+                this.TempData[ErrorMessage] = "You must be a contractor in order to edit jobs!";
+                return RedirectToAction("Join", "Contractor");
+            }
+            
+            string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
+            bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
+
+            if (!isContractorOwner)
+            {
+                this.TempData[ErrorMessage] = "Cannot edit jobs you dont own!";
+                return RedirectToAction("MyJobs", "Job");
+            }
+
+            JobFormModel jobFormModel = await this.jobService.GetJobForEditAsync(id);
+
+            return View(jobFormModel);
+            
         }
         
 
