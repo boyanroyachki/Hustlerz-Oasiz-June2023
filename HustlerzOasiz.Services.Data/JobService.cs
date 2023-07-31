@@ -20,6 +20,7 @@ namespace HustlerzOasiz.Services.Data
 		public Job GetByIdAsync(string id)
 		{
 			var wantedJob =  data.Jobs.FirstOrDefault(j => j.Id.ToString() == id);
+			
 
 			return wantedJob;
 		}

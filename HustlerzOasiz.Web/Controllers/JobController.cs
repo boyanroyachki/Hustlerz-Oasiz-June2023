@@ -116,16 +116,18 @@ namespace HustlerzOasiz.Web.Controllers
             return this.View(jobs);
         }  //need to add contractor 
 
-        //public IActionResult Detail(Guid id)
-        //{
-        //    var wantedJob = jobService.GetByIdAsync(id.ToString());
-        //    if (wantedJob != null)
-        //    {
-        //        return this.View(wantedJob);
-        //    }
-        //    return BadRequest(); //not done
-        //}  
-        
+        public async Task<IActionResult> Detail(Guid id)
+        {
+            var wantedJob = jobService.GetByIdAsync(id.ToString());
+            wantedJob.Category =  await this.categoryService.GetCategoryByIdAsync(wantedJob.CategoryId);
+            wantedJob.Contractor = await this.contractorService.GetContractorByUserIdAsync(User.GetId()!);
+            if (wantedJob != null)
+            {
+                return this.View(wantedJob);
+            }
+            return BadRequest(); //not done
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(string id)

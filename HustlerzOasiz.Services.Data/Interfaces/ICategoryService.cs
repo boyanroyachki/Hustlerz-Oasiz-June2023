@@ -12,5 +12,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
     {
         Task<IEnumerable<ChooseACategoryFormModel>> GetCategoriesAsync(); //
         Task<bool> ExistsByIdAsync(int id); //
-    }
+
+        Task<Category> GetCategoryByIdAsync(int id); //
+
+	}
 }

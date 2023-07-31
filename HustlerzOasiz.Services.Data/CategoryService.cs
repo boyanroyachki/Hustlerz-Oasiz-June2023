@@ -34,5 +34,10 @@ namespace HustlerzOasiz.Services.Data
 
             return categories;
         }
+        public async Task<Category> GetCategoryByIdAsync(int id)
+        {
+            Category category = await data.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            return category;
+        }
     }
 }

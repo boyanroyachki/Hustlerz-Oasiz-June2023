@@ -1,5 +1,35 @@
 ﻿@using MarauderzOasiz.Data.Models;
 @model Job;
  
-<h1>Proba proba not done</h1>
-<h2>@Model.Title</h2>
+<h2 class="text-center">Job details:</h2>
+<h3>Status: @Model.Status</h3>
+<h3>Category: @Model.Category.Name</h3>
+<h3>Contractor username: @Model.Contractor.Username</h3>
+<h3>Contractors contact: @Model.Contractor.PhoneNumber</h3>
+<hr />
+<hr />
+<h1 class="text-center"><strong>@Model.Title</strong></h1>
+<hr />
+<h2>@Model.Location</h2>
+<hr />
+<hr />
+<p>@Model.Details</p>
+<hr />
+<hr />
+<h2>The Contractor pays @Model.Price $ for the job.</h2>
+<hr />
+<hr />
+@{
+	if (Model.Deadline == null)
+	{
+		<h2>Job has no deadline.</h2>
+	}
+	else
+	{
+		<h2>Job due to: @Model.Deadline</h2>
+	}
+ }
+
+
+
+
