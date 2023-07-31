@@ -2,7 +2,6 @@
 using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HustlerzOasiz.Services.Data

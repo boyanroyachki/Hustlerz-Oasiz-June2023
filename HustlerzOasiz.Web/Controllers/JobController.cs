@@ -200,16 +200,19 @@ namespace HustlerzOasiz.Web.Controllers
 
         public IActionResult MyJobs()
         {
-            string userId = this.User.GetId()!;
-
-            var jobs = this.jobService.GetUsersJobsByUserIdAsync(userId);
-
-            if (jobs == null || jobs.Count() < 1)
+            try
             {
-                this.TempData[ErrorMessage] = "You have not adopted any jobs!";
-                return RedirectToAction("BrowseJobs", "Job");
-            }
-            return View(jobs);
+				string userId = this.User.GetId()!;
+				var jobs = this.jobService.GetUsersJobsByUserIdAsync(userId);
+
+                return View(jobs);
+			}
+            catch (Exception)
+            {
+
+				this.TempData[ErrorMessage] = "You have not adopted any jobs!";
+				return RedirectToAction("BrowseJobs", "Job");
+			}
         }
 
 
