@@ -45,6 +45,16 @@ body {
     background-color: darkslategray;
     color: white;
 }
+.form-group {
+    background-color: darkslategray !important;
+    color: white !important;
+}
+    .form-group:focus {
+        background-color: darkslategray !important;
+        color: white !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
 
     .form-control:focus {
         background-color: darkslategray;

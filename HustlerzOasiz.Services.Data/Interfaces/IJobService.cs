@@ -28,6 +28,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         IEnumerable<Job> GetUsersJobsByUserIdAsync(string userId);    
 
+        Task<JobDeleteViewModel> GetJobForDeleteByIdAsync(string jobId);
+
 
 
 

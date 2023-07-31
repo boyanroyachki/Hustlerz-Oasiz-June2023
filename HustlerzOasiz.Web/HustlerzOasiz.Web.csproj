@@ -24,4 +24,12 @@
     <ProjectReference Include="..\MarauderzOasiz.Data\HustlerzOasiz.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Job\Delete.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Job\Delete.cshtml" />
+  </ItemGroup>
+
 </Project>
