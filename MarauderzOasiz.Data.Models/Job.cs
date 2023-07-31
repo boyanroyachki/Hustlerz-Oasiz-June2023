@@ -1,16 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Update.Internal;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using static HustlerzOasiz.Common.EntityValidationConstants.Job;
 
 namespace MarauderzOasiz.Data.Models
 {
-    public class Job
-    {
+	public class Job
+    { 
         public Job()
         {
             Id = Guid.NewGuid();

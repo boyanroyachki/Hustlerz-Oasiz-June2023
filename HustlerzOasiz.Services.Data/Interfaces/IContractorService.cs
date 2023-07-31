@@ -21,6 +21,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
         Task<string> GetContractorIdByUserIdAsync(string userId);
         Contractor GetContractorByContractorIdAsync(string contractorId);
 
+        Task AdoptJobByUserIdAndJobIdAsync(string userId, string jobId);
+
 
 
 	}

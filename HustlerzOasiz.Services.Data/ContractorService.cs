@@ -89,5 +89,14 @@ namespace HustlerzOasiz.Services.Data
             Contractor? contractor =  data.Contractors.FirstOrDefault(c => c.Id.ToString() == contractorId);
             return contractor;
         }
-    }
+
+		public async Task AdoptJobByUserIdAndJobIdAsync(string userId, string jobId)
+		{
+           AppUser? user =  await this.data.Users.FirstOrDefaultAsync(x => x.Id.ToString() == userId);
+           Job? job = await this.data.Jobs.FirstOrDefaultAsync(x => x.Id.ToString() == jobId);
+            user.AdoptedJobs.Add(job);
+
+            await this.data.SaveChangesAsync();
+		}
+	}
 }

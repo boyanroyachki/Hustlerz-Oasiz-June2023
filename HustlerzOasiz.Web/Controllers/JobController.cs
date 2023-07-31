@@ -1,6 +1,7 @@
 ﻿using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Infrastructure;
 using HustlerzOasiz.Web.ViewModels.Job;
+using MarauderzOasiz.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static HustlerzOasiz.Common.NotificationMessagesConstants;
@@ -94,6 +95,7 @@ namespace HustlerzOasiz.Web.Controllers
                 await jobService.PublishJobAsync(model, contractorId!);
 
                 TempData[SuccessMessage] = "Job was published.";
+
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception)
@@ -103,7 +105,6 @@ namespace HustlerzOasiz.Web.Controllers
 
                 return View(model);
                 //return BadRequest();
-
             }
         }   //done and working
 
@@ -116,6 +117,7 @@ namespace HustlerzOasiz.Web.Controllers
             return this.View(jobs);
         }  //need to add contractor 
 
+        [HttpGet]
         public async Task<IActionResult> Detail(Guid id)
         {
             var wantedJob = jobService.GetByIdAsync(id.ToString());
@@ -128,8 +130,30 @@ namespace HustlerzOasiz.Web.Controllers
             return BadRequest(); //not done
         }
 
+        [HttpPost]
+		public async Task<IActionResult> Detail(Guid id, Job model)
+        {
+			if (!ModelState.IsValid)
+			{
+				return this.View(model);
+			}
 
-        [HttpGet]
+			try
+			{
+                await this.contractorService.AdoptJobByUserIdAndJobIdAsync(this.User.GetId()!, id.ToString());
+
+			}
+			catch (Exception)
+			{
+
+				this.ModelState.AddModelError(string.Empty, "Unexpected error accured while trying to adopt the Job!");
+
+				return this.View(model);
+			}
+			return this.RedirectToAction("Index", "Home");
+		}
+
+		[HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             bool jobExists = await this.jobService.JobExistsByIdAsync(id);
@@ -170,9 +194,6 @@ namespace HustlerzOasiz.Web.Controllers
 
                 return this.RedirectToAction("BrowseJobs", "Job");
             }
-
-            
-            
         }
 
         [HttpPost]
@@ -197,7 +218,8 @@ namespace HustlerzOasiz.Web.Controllers
                
                 return this.View(model);
             }
-            return this.RedirectToAction("Details", "Job", new {id});
+            this.TempData[SuccessMessage] = "Job was edited successfully";
+            return this.RedirectToAction("Detail", "Job", new {id});
         }
 
         public IActionResult MyJobs()
@@ -215,13 +237,6 @@ namespace HustlerzOasiz.Web.Controllers
 				this.TempData[ErrorMessage] = "You have not adopted any jobs!";
 				return RedirectToAction("BrowseJobs", "Job");
 			}
-        }
-
-
-		
-
-
-
-
+        }   
 	}
 }

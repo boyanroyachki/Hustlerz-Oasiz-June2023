@@ -1,9 +1,11 @@
-﻿@using MarauderzOasiz.Data.Models;
-@model Job;
+﻿@using HustlerzOasiz.Web.Data;
+@using MarauderzOasiz.Data.Models;
+@model Job
+@inject HustlerzOasizDbContext data;
  
 <h2 class="text-center">Job details:</h2>
 <h3>Status: @Model.Status</h3>
-<h3>Category: @Model.Category.Name</h3>
+<h3>Category: @Model.Category.Name.ToString()</h3>
 <h3>Contractor username: @Model.Contractor.Username</h3>
 <h3>Contractors contact: @Model.Contractor.PhoneNumber</h3>
 <hr />
@@ -29,6 +31,13 @@
 		<h2>Job due to: @Model.Deadline</h2>
 	}
  }
+
+
+
+
+
+	
+
 
 
 
