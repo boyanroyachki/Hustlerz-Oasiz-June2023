@@ -278,5 +278,33 @@ namespace HustlerzOasiz.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
 		}
-	}
+        //[HttpPost]
+        //public async Task<IActionResult> Delete(string id, JobDeleteViewModel model)
+        //{
+
+        //    bool jobExists = await this.jobService.JobExistsByIdAsync(id);
+
+        //    if (!jobExists)
+        //    {
+        //        this.TempData[ErrorMessage] = "Job with the given ID does not exist!";
+        //        return RedirectToAction("BrowseJobs", "Job");
+        //    }
+        //    bool isUserContractor = await this.contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
+
+        //    if (!isUserContractor)
+        //    {
+        //        this.TempData[ErrorMessage] = "You must be a contractor in order to delete jobs!";
+        //        return RedirectToAction("Join", "Contractor");
+        //    }
+
+        //    string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
+        //    bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
+
+        //    if (!isContractorOwner)
+        //    {
+        //        this.TempData[ErrorMessage] = "Cannot delete jobs you dont own!";
+        //        return RedirectToAction("MyJobs", "Job");
+        //    }
+        //}
+    }
 }

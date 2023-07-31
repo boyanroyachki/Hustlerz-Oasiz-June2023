@@ -69,6 +69,8 @@ namespace MarauderzOasiz.Data.Models
 
         public virtual AppUser? Executor { get; set; }
 
+        public bool IsActive { get; set; }
+
 
         public void ChangeStatus(string status)
         {

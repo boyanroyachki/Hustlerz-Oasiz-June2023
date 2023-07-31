@@ -30,6 +30,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task<JobDeleteViewModel> GetJobForDeleteByIdAsync(string jobId);
 
+        Task DeleteJobByIdAsync(string jobId);
+
 
 
 

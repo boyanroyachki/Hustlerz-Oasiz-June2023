@@ -147,5 +147,13 @@ namespace HustlerzOasiz.Services.Data
 
 			return jobForDeleteModel;
 		}
-	}
+
+        public async Task DeleteJobByIdAsync(string jobId)
+        {
+            Job? job = await this.data.Jobs.FirstAsync(x => x.Id.ToString() == jobId);
+
+			 job.IsActive = false;
+			await this.data.SaveChangesAsync();
+        }
+    }
 }
