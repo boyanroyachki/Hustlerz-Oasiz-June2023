@@ -150,7 +150,9 @@ namespace HustlerzOasiz.Services.Data
 
         public async Task DeleteJobByIdAsync(string jobId)
         {
-            Job? job = await this.data.Jobs.FirstAsync(x => x.Id.ToString() == jobId);
+            Job? job = await this.data.Jobs
+				.Where(j => j.IsActive)
+				.FirstAsync(x => x.Id.ToString() == jobId);
 
 			 job.IsActive = false;
 			await this.data.SaveChangesAsync();
