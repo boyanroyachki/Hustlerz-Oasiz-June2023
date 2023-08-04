@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HustlerzOasiz.Services.Data
 {
-	public class JobService : IJobService
+    public class JobService : IJobService
 	{
 		private readonly HustlerzOasizDbContext data;
 
@@ -157,5 +157,46 @@ namespace HustlerzOasiz.Services.Data
 			 job.IsActive = false;
 			await this.data.SaveChangesAsync();
         }
+
+        public async Task AdoptJobByIdAsync(string jobId, string userId)
+        {
+            Job job = await this.data.Jobs.FirstAsync(j => j.Id.ToString() == jobId);
+			job.ExecutorId = Guid.Parse(userId);
+
+            AppUser user = await this.data.Users.FirstAsync(u => u.Id.ToString() == userId);
+			user.AdoptedJobs.Add(job);
+
+            await this.data.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsJobAdoptedByIdAsync(string jobId)
+        {
+			Job job = await this.data.Jobs.FirstAsync(j => j.Id.ToString() == jobId);
+
+			return job.ExecutorId.HasValue;
+        }
+
+        public async Task<bool> IsJobAdoptedByUserWithIdAsync(string jobId, string userId)
+        {
+            Job job = await this.data.Jobs.Where(j => j.IsActive).FirstAsync(j => j.Id.ToString() == jobId);
+
+			return job.ExecutorId.ToString() == userId && job.ExecutorId.HasValue;
+			//in case userId and executor id are both null, the method will return true, so we add HasValue
+        }
+
+        public Task QuitJobByIdAsync(string jobId, string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        //     public async Task QuitJobByIdAsync(string jobId, string userId)
+        //     {
+        //         AppUser user = await this.data.Users.FirstAsync(u => u.Id.ToString() == userId);
+        //Job job = await user.AdoptedJobs.FirstAsync(x => x.Id.ToString() == jobId);
+
+        //user.AdoptedJobs.Remove(job);
+
+        //await this.data.SaveChangesAsync();
+        //     }
     }
 }

@@ -3,7 +3,7 @@ using static HustlerzOasiz.Common.EntityValidationConstants.Job;
 
 namespace MarauderzOasiz.Data.Models
 {
-	public class Job
+    public class Job
     { 
         public Job()
         {
@@ -69,7 +69,7 @@ namespace MarauderzOasiz.Data.Models
 
         public virtual AppUser? Executor { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } 
 
 
         public void ChangeStatus(string status)

@@ -1,10 +1,5 @@
 ﻿using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HustlerzOasiz.Services.Data.Interfaces
 {
@@ -31,6 +26,14 @@ namespace HustlerzOasiz.Services.Data.Interfaces
         Task<JobDeleteViewModel> GetJobForDeleteByIdAsync(string jobId);
 
         Task DeleteJobByIdAsync(string jobId);
+
+        Task AdoptJobByIdAsync(string jobId, string userId);
+
+        Task<bool> IsJobAdoptedByIdAsync(string jobId);
+
+        Task<bool> IsJobAdoptedByUserWithIdAsync(string jobId, string userId);
+
+        Task QuitJobByIdAsync(string jobId, string userId);
 
 
 

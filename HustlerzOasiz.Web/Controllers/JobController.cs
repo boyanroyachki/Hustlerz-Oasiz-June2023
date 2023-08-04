@@ -322,6 +322,38 @@ namespace HustlerzOasiz.Web.Controllers
             }
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Adopt(string id)
+        {
+            bool jobExist = await this.jobService.JobExistsByIdAsync(id);
+            if (!jobExist)
+            {
+                this.TempData[ErrorMessage] = "Job with the given ID does not exist!";
+                return this.RedirectToAction("BrowseJobs", "Job");
+            }
+
+            bool isJobAdopted = await this.jobService.IsJobAdoptedByIdAsync(id);
+            if (isJobAdopted)
+            {
+                this.TempData[ErrorMessage] = "This job is already adopted by another executor!";
+                return this.RedirectToAction("BrowseJobs", "Job");
+            }
+
+            try
+            {
+                string userId = this.User.GetId()!;
+                await this.jobService.AdoptJobByIdAsync(id, userId);
+                return this.RedirectToAction("BrowseJobs", "Job");
+            }
+            catch (Exception)
+            {
+                this.TempData[ErrorMessage] = "Unexpected error accured while trying to adopt the job.";
+                return this.RedirectToAction("BrowseJobs", "Job");
+            }
+        }
+        //quit action to do
+
         
     }
 }

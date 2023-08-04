@@ -9,6 +9,10 @@ namespace HustlerzOasiz.Data.Configurations
         public void Configure(EntityTypeBuilder<Job> builder)
         {
             builder
+               .Property(j => j.IsActive)
+               .HasDefaultValue(true);
+
+            builder
                 .HasOne(j => j.Category)
                 .WithMany(category => category.Jobs)
                 .HasForeignKey(j => j.CategoryId)
