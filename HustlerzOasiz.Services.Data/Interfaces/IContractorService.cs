@@ -23,6 +23,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task AdoptJobByUserIdAndJobIdAsync(string userId, string jobId);
 
+        bool ContractorExistsByUserAsync(AppUser user);
+
 
 
 	}

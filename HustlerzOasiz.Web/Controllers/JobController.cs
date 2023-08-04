@@ -349,17 +349,27 @@ namespace HustlerzOasiz.Web.Controllers
             }
 
             bool isJobAdopted = await this.jobService.IsJobAdoptedByIdAsync(id);
+            bool isJobAdoptedByCurrentUser = await this.jobService
+                .IsJobAdoptedByUserWithIdAsync(id, this.User.GetId()!);
+
             if (isJobAdopted)
             {
+                if (isJobAdoptedByCurrentUser)
+                {
+                    this.TempData[ErrorMessage] = "This job is already adopted by you!";
+                    return this.RedirectToAction("MyJobs", "Job");
+                }
                 this.TempData[ErrorMessage] = "This job is already adopted by another executor!";
                 return this.RedirectToAction("BrowseJobs", "Job");
             }
+
 
             try
             {
                 string userId = this.User.GetId()!;
                 await this.jobService.AdoptJobByIdAsync(id, userId);
-                return this.RedirectToAction("BrowseJobs", "Job");
+                this.TempData[SuccessMessage] = "Successesfully adopted job!";
+                return this.RedirectToAction("MyJobs", "Job");
             }
             catch (Exception)
             {
@@ -368,6 +378,41 @@ namespace HustlerzOasiz.Web.Controllers
             }
         }
         //quit action to do
+
+        [HttpGet]
+        public async Task<IActionResult> Quit(string id) 
+        {
+
+            bool jobExist = await this.jobService.JobExistsByIdAsync(id);
+            if (!jobExist)
+            {
+                this.TempData[ErrorMessage] = "Job with the given ID does not exist!";
+                return this.RedirectToAction("MyJobs", "Job");
+            }
+
+            bool isJobAdopted = await this.jobService.IsJobAdoptedByUserWithIdAsync(id, this.User.GetId()!);
+            if (!isJobAdopted)
+            {
+                this.TempData[ErrorMessage] = "This job is not adopted by you!";
+                return this.RedirectToAction("MyJobs", "Job");
+            }
+
+            try
+            {
+                string userId = this.User.GetId()!;
+                await this.jobService.QuitJobByIdAsync(id, userId);
+
+                this.TempData[WarningMessage] = "Job is successesfully quited!";
+
+                return this.RedirectToAction("MyJobs", "Job");
+            }
+            catch (Exception)
+            {
+
+                this.TempData[ErrorMessage] = "Unexpected error accured while trying to quit job!";
+                return this.RedirectToAction("MyJobs", "Job");
+            }
+        }
 
         
     }

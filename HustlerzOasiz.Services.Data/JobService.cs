@@ -133,11 +133,10 @@ namespace HustlerzOasiz.Services.Data
 			await this.data.SaveChangesAsync();
 		}
 
-		public  IEnumerable<Job> GetUsersJobsByUserIdAsync(string userId)
+		public IEnumerable<Job> GetUsersJobsByUserIdAsync(string userId)
 		{
-			AppUser user =  this.data.Users.First(u => u.Id.ToString() == userId);
-
-			return  user.AdoptedJobs.ToArray();
+			Job[] userJobs =  this.data.Jobs.Where(x => x.ExecutorId.ToString() == userId).ToArray();
+			return userJobs.Where(x => x.Status == JobStatus.Active.ToString());
 		}
 
 		public async Task<JobDeleteViewModel> GetJobForDeleteByIdAsync(string jobId)
@@ -198,10 +197,11 @@ namespace HustlerzOasiz.Services.Data
 
 		public async Task QuitJobByIdAsync(string jobId, string userId)
 		{
-			AppUser user = await this.data.Users.FirstAsync(u => u.Id.ToString() == userId);
-			Job job =  user.AdoptedJobs.First(x => x.Id.ToString() == jobId);
+			Job job =  await this.data.Jobs
+				.Where(x => x.ExecutorId.ToString() == userId)
+				.FirstAsync(x => x.Id.ToString() == jobId);
 
-			user.AdoptedJobs.Remove(job);
+			job.ExecutorId = null;
 
 			await this.data.SaveChangesAsync();
 		}
