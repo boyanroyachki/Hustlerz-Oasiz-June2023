@@ -90,6 +90,10 @@ namespace MarauderzOasiz.Data.Models
             {
                 Status = JobStatus.Active.ToString();
             }
+            else if (status == "Deleted")
+            {
+                Status = JobStatus.Deleted.ToString();
+            }
         }
 
     }

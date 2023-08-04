@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HustlerzOasiz.Common
+﻿namespace HustlerzOasiz.Common
 {
     public static class EntityValidationConstants
     {
@@ -35,7 +28,8 @@ namespace HustlerzOasiz.Common
                 Active,
                 Completed,
                 Failed,
-                Quited
+                Quited,
+                Deleted
             }
         }
         public static class Contractor

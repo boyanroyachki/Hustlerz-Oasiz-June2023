@@ -29,6 +29,21 @@ namespace HustlerzOasiz.Web.Controllers
            return View();
         }  //done and working
 
+
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> All([FromQuery] AllHousesQueryModel queryModel)
+        //{
+        //    AllHousesFilteredAndPagedServiceModel serviceModel =
+        //        await houseService.AllAsync(queryModel);
+
+        //    queryModel.Houses = serviceModel.Houses;
+        //    queryModel.TotalHouses = serviceModel.TotalHousesCount;
+        //    queryModel.Categories = await categoryService.AllCategoryNamesAsync();
+
+        //    return View(queryModel);
+        //}
+
         [HttpGet]
         public async Task<IActionResult> PublishAjob()
         {
@@ -110,7 +125,7 @@ namespace HustlerzOasiz.Web.Controllers
 
         //try
         [AllowAnonymous]
-        public  IActionResult BrowseJobs(int? categoryId = null)
+        public  IActionResult BrowseJobs(int? categoryId = null)   //not working
         {
             var jobs = this.jobService.GetJobsByCategory(categoryId);
 

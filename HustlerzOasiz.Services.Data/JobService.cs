@@ -3,6 +3,7 @@ using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using static HustlerzOasiz.Common.EntityValidationConstants.Job;
 
 namespace HustlerzOasiz.Services.Data
 {
@@ -65,13 +66,19 @@ namespace HustlerzOasiz.Services.Data
 		{
 			IQueryable<Job> jobsQuery = this.data.Jobs;
 
-			if (categoryId.HasValue)
+            jobsQuery = jobsQuery
+                   .Where(job => job.Status == JobStatus.Active.ToString());
+
+            if (categoryId.HasValue)
 			{
-				jobsQuery = jobsQuery.Where(job => job.CategoryId == categoryId.Value);
+				jobsQuery = jobsQuery
+					.Where(job => job.CategoryId == categoryId.Value);
 			}
+               
+            
 
 			return jobsQuery.ToList();
-		}
+		}   //not working
 
 		public async Task<bool> JobExistsByIdAsync(string id)
 		{
@@ -151,10 +158,10 @@ namespace HustlerzOasiz.Services.Data
         public async Task DeleteJobByIdAsync(string jobId)
         {
             Job? job = await this.data.Jobs
-				.Where(j => j.IsActive)
+				.Where(j => j.Status == JobStatus.Active.ToString())
 				.FirstAsync(x => x.Id.ToString() == jobId);
 
-			 job.IsActive = false;
+			 job.ChangeStatus(JobStatus.Deleted.ToString());
 			await this.data.SaveChangesAsync();
         }
 
@@ -178,25 +185,25 @@ namespace HustlerzOasiz.Services.Data
 
         public async Task<bool> IsJobAdoptedByUserWithIdAsync(string jobId, string userId)
         {
-            Job job = await this.data.Jobs.Where(j => j.IsActive).FirstAsync(j => j.Id.ToString() == jobId);
+            Job job = await this.data.Jobs.Where(j => j.Status == JobStatus.Active.ToString()).FirstAsync(j => j.Id.ToString() == jobId);
 
 			return job.ExecutorId.ToString() == userId && job.ExecutorId.HasValue;
 			//in case userId and executor id are both null, the method will return true, so we add HasValue
         }
 
-        public Task QuitJobByIdAsync(string jobId, string userId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task QuitJobByIdAsync(string jobId, string userId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //     public async Task QuitJobByIdAsync(string jobId, string userId)
-        //     {
-        //         AppUser user = await this.data.Users.FirstAsync(u => u.Id.ToString() == userId);
-        //Job job = await user.AdoptedJobs.FirstAsync(x => x.Id.ToString() == jobId);
+		public async Task QuitJobByIdAsync(string jobId, string userId)
+		{
+			AppUser user = await this.data.Users.FirstAsync(u => u.Id.ToString() == userId);
+			Job job =  user.AdoptedJobs.First(x => x.Id.ToString() == jobId);
 
-        //user.AdoptedJobs.Remove(job);
+			user.AdoptedJobs.Remove(job);
 
-        //await this.data.SaveChangesAsync();
-        //     }
-    }
+			await this.data.SaveChangesAsync();
+		}
+	}
 }
