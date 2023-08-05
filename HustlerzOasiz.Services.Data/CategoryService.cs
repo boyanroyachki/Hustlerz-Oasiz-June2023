@@ -17,12 +17,18 @@ namespace HustlerzOasiz.Services.Data
 
         public CategoryService(HustlerzOasizDbContext data) => this.data = data;
 
+
+        //Methods:
+
         public async Task<bool> ExistsByIdAsync(int id)
         {
             bool result = await data.Categories.AnyAsync(c => c.Id == id);
             return result;
         }
 
+        //
+
+        //Important
         public async Task<IEnumerable<ChooseACategoryFormModel>> GetCategoriesAsync()
         {
             var categories = await data.Categories.Select(c => new ChooseACategoryFormModel()
@@ -34,10 +40,15 @@ namespace HustlerzOasiz.Services.Data
 
             return categories;
         }
+
+        //
+
         public async Task<Category> GetCategoryByIdAsync(int id)
         {
             Category category = await data.Categories.FirstOrDefaultAsync(x => x.Id == id);
             return category;
         }
+
+        //
     }
 }

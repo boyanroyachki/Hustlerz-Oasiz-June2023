@@ -13,10 +13,15 @@ namespace HustlerzOasiz.Services.Data
 
 		public JobService(HustlerzOasizDbContext data) => this.data = data;
 
+
+		//Methods:
+
 		public async Task<IEnumerable<Job>> GetAllJobsAsync()
 		{
 			return await data.Jobs.ToArrayAsync();
 		}
+
+		//
 
 		public Job GetByIdAsync(string id)
 		{
@@ -25,6 +30,8 @@ namespace HustlerzOasiz.Services.Data
 
 			return wantedJob;
 		}
+
+		//
 
 		public async Task<IEnumerable<JobsIndexViewModel>> LatestJobsAsync()
 		{
@@ -40,6 +47,8 @@ namespace HustlerzOasiz.Services.Data
 
 			return latestJobs;
 		}
+
+		//
 
 		public async Task PublishJobAsync(PublishAJobViewModel model, string contractorId)
 		{
@@ -59,6 +68,8 @@ namespace HustlerzOasiz.Services.Data
 			await data.Jobs.AddAsync(job);
 			await data.SaveChangesAsync();
 		}
+
+		//
 
 
 		//try
@@ -80,11 +91,15 @@ namespace HustlerzOasiz.Services.Data
 			return jobsQuery.ToList();
 		}   //not working
 
+		//
+
 		public async Task<bool> JobExistsByIdAsync(string id)
 		{
 			bool exists = await this.data.Jobs.Where(x => x.Status == "Active").AnyAsync(x => x.Id.ToString() == id);
 			return exists;
 		}
+
+		//
 
 		public async Task<JobFormModel> GetJobForEditAsync(string jobId)
 		{
@@ -109,12 +124,16 @@ namespace HustlerzOasiz.Services.Data
 			};
 		}
 
+		//
+
 		public async Task<bool> IsContractorWithIdOwnerOfJobAsync(string jobId, string contractorId)
 		{
 			Job job = await data.Jobs.Where(j => j.Status == "Active").FirstAsync(j => j.Id.ToString() == jobId);
 
 			return job.ContractorId.ToString() == contractorId;  //not sure
 		}
+
+		//
 
 		public async Task EditJobByJobIdAndJobFormMode(string jobId, JobFormModel model)
 		{
@@ -133,11 +152,15 @@ namespace HustlerzOasiz.Services.Data
 			await this.data.SaveChangesAsync();
 		}
 
+		//
+
 		public IEnumerable<Job> GetUsersJobsByUserIdAsync(string userId)
 		{
 			Job[] userJobs =  this.data.Jobs.Where(x => x.ExecutorId.ToString() == userId).ToArray();
 			return userJobs.Where(x => x.Status == JobStatus.Active.ToString());
 		}
+
+		//
 
 		public async Task<JobDeleteViewModel> GetJobForDeleteByIdAsync(string jobId)
 		{
@@ -154,6 +177,9 @@ namespace HustlerzOasiz.Services.Data
 			return jobForDeleteModel;
 		}
 
+		//
+
+		//Very important
         public async Task DeleteJobByIdAsync(string jobId)
         {
             Job? job = await this.data.Jobs
@@ -163,6 +189,8 @@ namespace HustlerzOasiz.Services.Data
 			 job.ChangeStatus(JobStatus.Deleted.ToString());
 			await this.data.SaveChangesAsync();
         }
+
+		//
 
         public async Task AdoptJobByIdAsync(string jobId, string userId)
         {
@@ -175,12 +203,16 @@ namespace HustlerzOasiz.Services.Data
             await this.data.SaveChangesAsync();
         }
 
+		//
+
         public async Task<bool> IsJobAdoptedByIdAsync(string jobId)
         {
 			Job job = await this.data.Jobs.FirstAsync(j => j.Id.ToString() == jobId);
 
 			return job.ExecutorId.HasValue;
         }
+
+		//
 
         public async Task<bool> IsJobAdoptedByUserWithIdAsync(string jobId, string userId)
         {
@@ -190,10 +222,14 @@ namespace HustlerzOasiz.Services.Data
 			//in case userId and executor id are both null, the method will return true, so we add HasValue
         }
 
+		//
+
         //public Task QuitJobByIdAsync(string jobId, string userId)
         //{
         //    throw new NotImplementedException();
         //}
+
+		//
 
 		public async Task QuitJobByIdAsync(string jobId, string userId)
 		{
@@ -205,5 +241,25 @@ namespace HustlerzOasiz.Services.Data
 
 			await this.data.SaveChangesAsync();
 		}
-	}
+
+		//
+
+		//not done
+        public async Task<bool> isContractorOwnerOfJobByUserIdAsync(string userId, string jobId)
+        {
+			var contractor = await this.data.Contractors.FirstAsync(x => x.UserId.ToString() == userId);
+			if (contractor == null)
+			{
+				return false;
+			}
+
+			return await this.data.Jobs
+				.Where(x => x.ContractorId
+				.ToString() == contractor.Id
+				.ToString())
+				.AnyAsync(x => x.Id.ToString() == jobId);
+        }
+
+		//
+    }
 }

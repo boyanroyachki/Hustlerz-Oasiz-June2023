@@ -50,6 +50,20 @@
             background-color: #c0392b;
         }
 
+    .btn-cancel {
+        background-color: #7f8c8d; /* A neutral gray for the cancel button */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #333;
+        transition: background-color 0.2s;
+        margin-left: 10px; /* To give some space between the delete and cancel buttons */
+    }
+
+        .btn-cancel:hover {
+            background-color: #34495e;
+        }
+
     label {
         color: #999;
         font-weight: normal; /* Resets Bootstrap's bold labels */
@@ -72,8 +86,12 @@
                 </div>
                 <div class="form-group mt-2">
                     <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-cancel">Cancel</a>
                 </div>
             </div>
         </div>
     </form>
 </div>
+
+
+

@@ -13,11 +13,16 @@ namespace HustlerzOasiz.Services.Data
 
         public ContractorService(HustlerzOasizDbContext data) => this.data = data;
 
+
+        //Methods:
+
         //returns TRUE if a Contractor with the given ID exists, else FALSE
         public async Task<bool> ContractorExistsByUserIdAsync(string userId)
         {
             return await data.Contractors.AnyAsync(c => c.UserId.ToString() == userId);
         }
+
+        //
 
         //returns TRUE if a Contractor with the given PhoneNumber exists in the db context, else FALSE
         public async Task<bool> ContractorExistsByPhoneNumberAsync(string phoneNumber)
@@ -25,10 +30,14 @@ namespace HustlerzOasiz.Services.Data
             return await data.Contractors.AnyAsync(c => c.PhoneNumber == phoneNumber);
         }
 
+        //
+
         public async Task<bool> ContractorExistsByUsernameAsync(string userName)
         {
             return await data.Contractors.AnyAsync(c => c.Username == userName);
         }
+
+        //
 
         public async Task<bool> UserHasAdoptedJobsByUserIdAsync(string userId)
         {
@@ -44,6 +53,8 @@ namespace HustlerzOasiz.Services.Data
 
         }
 
+        //
+
 
         public async Task Create(string userId, JoinContractorsFormModel model)
         {
@@ -57,11 +68,15 @@ namespace HustlerzOasiz.Services.Data
             await data.SaveChangesAsync();
         }
 
+        //
+
         //public async Task<AppUser> GetUserByUserIdAsync(string userId)
         //{
         //    AppUser user = await this.data.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
         //    return user;
         //}
+
+        //
 
         public async Task<Contractor> GetContractorByUserIdAsync(string userId)
         {
@@ -72,6 +87,8 @@ namespace HustlerzOasiz.Services.Data
             }
             return null;
         }
+
+        //
 
         public async Task<string> GetContractorIdByUserIdAsync(string userId)
         {
@@ -84,11 +101,15 @@ namespace HustlerzOasiz.Services.Data
             return contractor.Id.ToString();
         }
 
+        //
+
         public Contractor GetContractorByContractorIdAsync(string contractorId)
         {
             Contractor? contractor = data.Contractors.FirstOrDefault(c => c.Id.ToString() == contractorId);
             return contractor;
         }
+
+        //
 
         public async Task AdoptJobByUserIdAndJobIdAsync(string userId, string jobId)
         {
@@ -99,11 +120,15 @@ namespace HustlerzOasiz.Services.Data
             await this.data.SaveChangesAsync();
         }
 
+        //
+
         public bool ContractorExistsByUserAsync(AppUser user)
         {
             string userId = user.Id.ToString();
             return data.Contractors.Any(c => c.UserId.ToString() == userId);
 
         }
+
+        //
     }
 }

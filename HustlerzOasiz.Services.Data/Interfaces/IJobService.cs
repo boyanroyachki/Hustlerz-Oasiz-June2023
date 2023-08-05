@@ -35,6 +35,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task QuitJobByIdAsync(string jobId, string userId);
 
+        Task<bool> isContractorOwnerOfJobByUserIdAsync(string userId, string jobId); //
+
 
 
 

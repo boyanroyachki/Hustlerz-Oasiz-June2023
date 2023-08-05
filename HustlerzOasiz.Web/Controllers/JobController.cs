@@ -366,6 +366,13 @@ namespace HustlerzOasiz.Web.Controllers
                 return this.RedirectToAction("BrowseJobs", "Job");
             }
 
+            //bool isJobOwnedByCurrentUser = await this.jobService.IsContractorWithIdOwnerOfJobAsync(this.User.GetId()!, id);
+            //if (isJobOwnedByCurrentUser)
+            //{
+            //    this.TempData[ErrorMessage] = "You cannot adopt jobs you have published!";
+            //    return this.RedirectToAction("BrowseJobs", "Job");
+            //}
+
             bool isJobAdopted = await this.jobService.IsJobAdoptedByIdAsync(id);
             bool isJobAdoptedByCurrentUser = await this.jobService
                 .IsJobAdoptedByUserWithIdAsync(id, this.User.GetId()!);
