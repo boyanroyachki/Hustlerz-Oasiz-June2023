@@ -113,7 +113,7 @@ namespace HustlerzOasiz.Services.Data
 		{
 			Job job = await data.Jobs.Where(j => j.Status == "Active").FirstAsync(j => j.Id.ToString() == jobId);
 
-			return (job.ContractorId.ToString() != contractorId);  //just for better understanding
+			return job.ContractorId.ToString() == contractorId;  //not sure
 		}
 
 		public async Task EditJobByJobIdAndJobFormMode(string jobId, JobFormModel model)

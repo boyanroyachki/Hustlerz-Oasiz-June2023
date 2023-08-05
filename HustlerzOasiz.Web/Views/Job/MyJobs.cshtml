@@ -4,66 +4,124 @@
 @model IEnumerable<Job>
 @inject IContractorService contractorService;
 
-@if (Model.Count(x => x.Status == "Active") == 0)
-{
-	<div class="text-center">
-		<h1>You have no active Jobs!</h1>
-	</div>
-	 <div class="text-center">
-		<a href="@Url.Action("BrowseJobs", "Job")" class="btn btn-primary">Browse avaliable jobs</a>
-		<a href="@Url.Action("MyArchivedJobs", "Job")" class="btn btn-primary">View your archived jobs</a>
-	</div>
-}
+<style>
+    /* Basic Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-else
-{
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 
-	<h1>Jobs</h1>
+    /* Styling for the main content */
+    .job-details-content {
+        color: #333; /* Dark grey for better readability */
+        padding: 20px;
+    }
 
-	<form method="get">
-		<select name="categoryId">
-			<option value="">All Categories</option>
-			<option value="1">Ammonition</option>
-			<option value="2">Protection</option>
-			<option value="3">Special Missions</option>
-			<option value="4">Cyber warfare or/and Cyber security</option>
+    /* Job Card Styling */
+    .job-box {
+        display: block;
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 10px 0;
+        text-decoration: none;
+        color: inherit;
+        transition: box-shadow 0.3s ease;
+    }
 
-			<!-- etc -->
-		</select>
-		<button type="submit">Filter</button>
-	</form>
+        .job-box:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
 
+    /* Form Elements Styling */
+    form {
+        margin-bottom: 20px;
+    }
 
+    select, button {
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
 
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        cursor: pointer;
+    }
 
-	<div class="job-container">
-		@foreach (var job in Model)
-		{
-			<a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="job-box">
-				<div>
-					<h2>@job.Title</h2>
-					<p>@job.Location</p>
-					<p>@job.Details</p>
-					<p>@job.Price $</p>
-					<p>Date posted: @job.DatePosted</p>
-					@* <p>Deadline: @job.Deadline</p>*@
-					@{
-						if (job.Deadline == null)
-						{
-							<p>No deadline</p>
-						}
-						else
-						{
-							<p>Deadline: @job.Deadline</p>
-						}
-						var contractor = contractorService.GetContractorByContractorIdAsync(job.ContractorId.ToString());
-						var username = contractor.Username;
+        button:hover {
+            background-color: #45a049;
+        }
 
-						<p>Published by: @username</p>
-					}
-					<!-- etc -->
-				</div>
-			</a>
-		}
-	</div>
-}
+    /* No Jobs Text Centering */
+    .text-center {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="job-details-content">
+    @if (Model.Count(x => x.Status == "Active") == 0)
+    {
+        <div class="text-center">
+            <h1>You have no active Jobs!</h1>
+        </div>
+        <div class="text-center">
+            <a href="@Url.Action("BrowseJobs", "Job")" class="btn btn-primary">Browse available jobs</a>
+            <a href="@Url.Action("MyArchivedJobs", "Job")" class="btn btn-primary">View your archived jobs</a>
+        </div>
+    }
+    else
+    {
+        <h1>Jobs</h1>
+
+        <form method="get">
+            <select name="categoryId">
+                <option value="">All Categories</option>
+                <option value="1">Ammonition</option>
+                <option value="2">Protection</option>
+                <option value="3">Special Missions</option>
+                <option value="4">Cyber warfare or/and Cyber security</option>
+                <!-- etc -->
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+
+        <div class="job-container">
+            @foreach (var job in Model)
+            {
+                <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="job-box">
+                    <h2>@job.Title</h2>
+                    <p>@job.Location</p>
+                    <p>@job.Details</p>
+                    <p>@job.Price $</p>
+                    <p>Date posted: @job.DatePosted</p>
+                    @{
+                        if (job.Deadline == null)
+                        {
+                            <p>No deadline</p>
+                        }
+                        else
+                        {
+                            <p>Deadline: @job.Deadline</p>
+                        }
+                        var contractor = contractorService.GetContractorByContractorIdAsync(job.ContractorId.ToString());
+                        var username = contractor.Username;
+
+                        <p>Published by: @username</p>
+                    }
+                </a>
+            }
+        </div>
+    }
+</div>

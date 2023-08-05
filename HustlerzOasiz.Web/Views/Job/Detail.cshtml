@@ -1,44 +1,83 @@
-﻿@using HustlerzOasiz.Web.Data;
-@using MarauderzOasiz.Data.Models;
+﻿@using MarauderzOasiz.Data.Models;
 @model Job
-@inject HustlerzOasizDbContext data;
- 
-<h2 class="text-center">Job details:</h2>
-<h3>Status: @Model.Status</h3>
-<h3>Category: @Model.Category.Name.ToString()</h3>
-<h3>Contractor username: @Model.Contractor.Username</h3>
-<h3>Contractors contact: @Model.Contractor.PhoneNumber</h3>
-<hr />
-<hr />
-<h1 class="text-center"><strong>@Model.Title</strong></h1>
-<hr />
-<h2>@Model.Location</h2>
-<hr />
-<hr />
-<p>@Model.Details</p>
-<hr />
-<hr />
-<h2>The Contractor pays @Model.Price $ for the job.</h2>
-<hr />
-<hr />
-@{
-	if (Model.Deadline == null)
-	{
-		<h2>Job has no deadline.</h2>
-	}
-	else
-	{
-		<h2>Job due to: @Model.Deadline</h2>
-	}
- }
 
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #333;
+        color: #f1f1f1;
+    }
 
+    .text-center {
+        text-align: center;
+    }
 
+    .divider {
+        margin: 2em 0;
+        border-bottom: 1px solid #555;
+    }
 
+    h1 {
+        color: #e0e0e0;
+    }
 
-	
+    h2 {
+        color: #bbbbbb;
+    }
 
+    h3 {
+        color: #999;
+    }
 
+    p {
+        line-height: 1.5;
+    }
 
+    strong {
+        color: #f39c12;
+    }
 
+    .content-wrapper {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        margin: 20px auto;
+        max-width: 800px;
+    }
 
+    .adopt-btn {
+        display: block;
+        background-color: #f39c12;
+        color: #333;
+        padding: 10px 20px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+    }
+
+        .adopt-btn:hover {
+            background-color: #e67e22;
+        }
+</style>
+
+<div class="content-wrapper">
+    <h2 class="text-center">Job details:</h2>
+    <h3>Status: <strong>@Model.Status</strong></h3>
+    <h3>Category: <strong>@Model.Category.Name</strong></h3>
+    <h3>Contractor username: <strong>@Model.Contractor.Username</strong></h3>
+    <h3>Contractors contact: <strong>@Model.Contractor.PhoneNumber</strong></h3>
+    <div class="divider"></div>
+    <h1 class="text-center">@Model.Title</h1>
+    <div class="divider"></div>
+    <h2>@Model.Location</h2>
+    <div class="divider"></div>
+    <p>@Model.Details</p>
+    <div class="divider"></div>
+    <h2>The Contractor pays <strong>@Model.Price $</strong> for the job.</h2>
+    <div class="divider"></div>
+    <h2>@(Model.Deadline == null ? "Job has no deadline." : $"Job due to: {Model.Deadline}")</h2>
+    <a href="@Url.Action("Adopt", "Job", new { id = Model.Id })" class="adopt-btn">Adopt</a>
+</div>

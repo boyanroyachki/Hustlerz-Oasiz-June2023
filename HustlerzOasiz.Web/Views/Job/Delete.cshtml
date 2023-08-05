@@ -1,27 +1,79 @@
 ﻿@model JobDeleteViewModel
-@using HustlerzOasiz.Web.ViewModels.Job;﻿
 @{
-    ViewBag.Title = "Delete House";
+    ViewBag.Title = "Delete Job";
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
-<hr />
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #333;
+        color: darkseagreen;
+    }
 
-<form method="post" asp-action="Delete">
-    <div class="row">
-        
-        <div class="col-md-8" >
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control text-black"  disabled="disabled" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control text-black"  disabled="disabled" />
-            </div>
-            <div class="form-group mt-2">
-                <input type="submit" value="Delete" class="btn btn-danger" />
+    .text-center {
+        text-align: center;
+    }
+
+    h2 {
+        color: #bbbbbb;
+    }
+
+    .content-wrapper {
+        background-color: #444;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        margin: 20px auto;
+        max-width: 800px;
+    }
+
+    .form-control {
+        background-color: #f39c12;
+        color: darkseagreen;
+        border: 1px solid #666;
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+        box-shadow: none; /* Removes Bootstrap's default shadow */
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #333;
+        transition: background-color 0.2s;
+    }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+    label {
+        color: #999;
+        font-weight: normal; /* Resets Bootstrap's bold labels */
+    }
+</style>
+
+<div class="content-wrapper">
+    <h2 class="text-center">@ViewBag.Title</h2>
+
+    <form method="post" asp-action="Delete">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" disabled="disabled" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" class="form-control" disabled="disabled" />
+                </div>
+                <div class="form-group mt-2">
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>

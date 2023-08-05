@@ -45,6 +45,7 @@ body {
     background-color: darkslategray;
     color: white;
 }
+
 .form-group {
     background-color: darkslategray !important;
     color: white !important;
@@ -59,12 +60,12 @@ body {
         box-shadow: none !important;
     }
 
-    .form-control:focus {
-        background-color: darkslategray;
-        color: white;
-        outline: none;
-        box-shadow: none;
-    }
+.form-control:focus {
+    background-color: darkslategray;
+    color: white;
+    outline: none;
+    box-shadow: none;
+}
 
 .project_menu ul {
     list-style: none;
@@ -88,6 +89,7 @@ body {
             .project_menu ul li a:hover {
                 background-color: #4a4a4a; /* This changes the background color of the links when hovered, adjust as needed */
             }
+
 .job-container {
     display: flex;
     flex-wrap: wrap;
@@ -108,5 +110,3 @@ body {
     .job-box:hover {
         background-color: #f0f0f0; /* adjust as needed */
     }
- 
-

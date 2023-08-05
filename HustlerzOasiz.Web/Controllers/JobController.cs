@@ -4,6 +4,7 @@ using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using static HustlerzOasiz.Common.NotificationMessagesConstants;
 
 namespace HustlerzOasiz.Web.Controllers
@@ -18,9 +19,10 @@ namespace HustlerzOasiz.Web.Controllers
         //not a problem to inject all services
         public JobController(IJobService jobService, ICategoryService categoryService, IContractorService contractorService)
         {
-            this.jobService = jobService;
-            this.categoryService = categoryService;
-            this.contractorService = contractorService;
+            //saw this online
+            this.jobService = jobService ?? throw new ArgumentNullException(nameof(jobService));
+            this.categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            this.contractorService = contractorService ?? throw new ArgumentNullException(nameof(contractorService));
         }
 
         
@@ -47,12 +49,10 @@ namespace HustlerzOasiz.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PublishAjob()
         {
-            bool isContractor =
-                await contractorService.ContractorExistsByUserIdAsync(User.GetId()!);
-            if (!isContractor)
+            string? userId = this.User.GetId();
+            if (userId == null || !await contractorService.ContractorExistsByUserIdAsync(userId)) //added
             {
                 this.TempData[ErrorMessage] = "You must be a Contractor to post Jobs!";
-
                 return RedirectToAction("Join", "Contractor");
             }
 
@@ -65,9 +65,9 @@ namespace HustlerzOasiz.Web.Controllers
 
                 return View(formModel);
             }
-            catch (Exception )
+            catch (Exception ex)
             {
-                //return GeneralError();
+                Debug.WriteLine(ex);
                 return RedirectToAction("Index", "Home");
                 
             }
@@ -76,12 +76,10 @@ namespace HustlerzOasiz.Web.Controllers
         public async Task<IActionResult> PublishAJob(PublishAJobViewModel model)
         {
 
-            bool isContractor =
-                await contractorService.ContractorExistsByUserIdAsync(User.GetId()!);
-            if (!isContractor)
+            string? userId = this.User.GetId();
+            if (userId == null || !await contractorService.ContractorExistsByUserIdAsync(userId))  //added
             {
                 TempData[ErrorMessage] = "You must be a Contractor to post Jobs!";
-
                 return RedirectToAction("Join", "Contractor");
             }
 
@@ -106,6 +104,13 @@ namespace HustlerzOasiz.Web.Controllers
                 string? contractorId =
                     await contractorService.GetContractorIdByUserIdAsync(User.GetId()!);
 
+                if (contractorId == null)  //added
+                {
+                    ModelState.AddModelError(string.Empty, "Unexpected error occurred. Contractor ID is null.");
+                    model.Categories = await categoryService.GetCategoriesAsync();
+                    return View(model);
+                }
+
 
                 await jobService.PublishJobAsync(model, contractorId!);
 
@@ -128,24 +133,36 @@ namespace HustlerzOasiz.Web.Controllers
         public  IActionResult BrowseJobs(int? categoryId = null)   //not working
         {
             var jobs = this.jobService.GetJobsByCategory(categoryId);
-
             return this.View(jobs);
         }  //need to add contractor 
 
         [HttpGet]
         public async Task<IActionResult> Detail(Guid id)
         {
-            var wantedJob = jobService.GetByIdAsync(id.ToString());
-            wantedJob.Category =  await this.categoryService.GetCategoryByIdAsync(wantedJob.CategoryId);
-            wantedJob.Contractor = await this.contractorService.GetContractorByUserIdAsync(User.GetId()!);
+            //var wantedJob = jobService.GetByIdAsync(id.ToString());
+            //wantedJob.Category = await this.categoryService.GetCategoryByIdAsync(wantedJob.CategoryId);
+            //wantedJob.Contractor = await this.contractorService.GetContractorByUserIdAsync(User.GetId()!);
+            //if (wantedJob != null)
+            //{
+            //    return this.View(wantedJob);
+            //}
+            //return BadRequest(); //not done
+
+            var wantedJob =  jobService.GetByIdAsync(id.ToString());
             if (wantedJob != null)
             {
-                return this.View(wantedJob);
+                string? userId = this.User.GetId();
+                if (userId != null)
+                {
+                    wantedJob.Category = await this.categoryService.GetCategoryByIdAsync(wantedJob.CategoryId);
+                    wantedJob.Contractor = await this.contractorService.GetContractorByUserIdAsync(userId);
+                    return this.View(wantedJob);
+                }
             }
-            return BadRequest(); //not done
+            return BadRequest();
         }
 
-        [HttpPost]
+        [HttpPost]  //not done
 		public async Task<IActionResult> Detail(Guid id, Job model)
         {
 			if (!ModelState.IsValid)
@@ -156,8 +173,9 @@ namespace HustlerzOasiz.Web.Controllers
 			try
 			{
                 await this.contractorService.AdoptJobByUserIdAndJobIdAsync(this.User.GetId()!, id.ToString());
+                return this.RedirectToAction("Index", "Home");
 
-			}
+            }
 			catch (Exception)
 			{
 
@@ -165,7 +183,7 @@ namespace HustlerzOasiz.Web.Controllers
 
 				return this.View(model);
 			}
-			return this.RedirectToAction("Index", "Home");
+			
 		}
 
 		[HttpGet]
