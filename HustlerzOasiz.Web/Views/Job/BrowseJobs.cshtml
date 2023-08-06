@@ -13,6 +13,10 @@
         box-sizing: border-box;
     }
 
+    h1 {
+        color: white;
+    }
+
     body {
         font-family: 'Roboto', sans-serif;
     }
@@ -25,6 +29,10 @@
 
     /* Job Card Styling */
     .job-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
         display: block;
         background-color: #fff;
         border: 1px solid #e0e0e0;
@@ -35,6 +43,22 @@
         color: inherit;
         transition: box-shadow 0.3s ease;
     }
+
+    /* Button Container */
+    .button-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .job-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
 
         .job-box:hover {
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -63,12 +87,65 @@
         button:hover {
             background-color: #45a049;
         }
+
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px 2px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-details {
+        background-color: #3498db;
+        color: #fff;
+    }
+
+    .btn-adopt {
+        background-color: #f39c12;
+        color: #fff;
+    }
+
+    .btn-quit {
+        background-color: #e74c3c;
+        color: #fff;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+
+    /* Job Box Styling */
+    .job-box {
+        /* ...existing styles... */
+        height: 300px; /* Adjust as needed */
+    }
+
+    .job-box {
+        flex: 1 0 30%; /* This will make each box take up approximately one third of the container width. */
+        margin: 1%; /* Adding some margin for better visual separation. */
+    }
+
+    /* Job Details Styling */
+    .job-details {
+        overflow-y: auto;
+        max-height: 200px; /* Adjust as needed */
+        padding-right: 10px;
+    }
+
 </style>
+
 
 <div class="job-details-content">
     <h1>All Jobs</h1>
 
     <form method="get">
+        <!-- ...existing form... -->
         <select name="categoryId">
             <option value="">All Categories</option>
             <option value="1">Ammonition</option>
@@ -83,27 +160,37 @@
     <div class="job-container">
         @foreach (var job in Model)
         {
-            <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="job-box">
-                <h2>@job.Title</h2>
-                <p>@job.Location</p>
-                <p>@job.Details</p>
-                <p>@job.Price $</p>
-                <p>Date posted: @job.DatePosted</p>
-                @{
-                    if (job.Deadline == null)
-                    {
-                        <p>No deadline</p>
-                    }
-                    else
-                    {
-                        <p>Deadline: @job.Deadline</p>
-                    }
-                    var contractor = contractorService.GetContractorByContractorIdAsync(job.ContractorId.ToString());
-                    var username = contractor.Username;
+            <div class="job-box">
+                <!-- Job Details with Scrolling -->
+                <div class="job-details">
+                    <h2>@job.Title</h2>
+                    <p>@job.Location</p>
+                    <p>@job.Details</p>
+                    <p>@job.Price $</p>
+                    <p>Date posted: @job.DatePosted</p>
+                    @{
+                        if (job.Deadline == null)
+                        {
+                            <p>No deadline</p>
+                        }
+                        else
+                        {
+                            <p>Deadline: @job.Deadline</p>
+                        }
+                        var contractor = contractorService.GetContractorByContractorIdAsync(job.ContractorId.ToString());
+                        var username = contractor.Username;
 
-                    <p>Published by: @username</p>
-                }
-            </a>
+                        <p>Published by: @username</p>
+                    }
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-container">
+                    <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="btn btn-details">Details</a>
+                    <a href="@Url.Action("Adopt", "Job", new { id = job.Id })" class="btn btn-adopt">Adopt</a>
+                    <a href="@Url.Action("Quit", "Job", new { id = job.Id })" class="btn btn-quit">Quit</a>
+                </div>
+            </div>
         }
     </div>
 </div>
