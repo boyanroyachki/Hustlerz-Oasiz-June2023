@@ -1,3 +1,8 @@
+using HustlerzOasiz.Services.Data.Interfaces;
+using HustlerzOasiz.Web.Data;
+using HustlerzOasiz.Web.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
+
 namespace HustlerzOasiz.WebApi
 {
     public class Program
@@ -6,7 +11,13 @@ namespace HustlerzOasiz.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<HustlerzOasizDbContext>(options => options.UseSqlServer(connectionString));
+
+
             // Add services to the container.
+
+            builder.Services.AddApplicationServices(typeof(IHomeService));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
