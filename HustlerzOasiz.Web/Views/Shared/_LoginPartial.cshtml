@@ -1,17 +1,27 @@
-﻿@using MarauderzOasiz.Data.Models;
+﻿@using HustlerzOasiz.Services.Data.Interfaces;
+@using MarauderzOasiz.Data.Models;
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@using static HustlerzOasiz.Web.Infrastructure.ClaimsPrincipalExtensions;
+
+@inject IContractorService ContractorService
+@{
+    bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId());
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-white" asp-area="" asp-controller="Contractor" asp-action="Join">Start career as a Contractor!</a>
-        </li>
+        @if (!isUserContractor)
+        {
+          <li class="nav-item">
+                <a class="nav-link text-white" asp-area="" asp-controller="Contractor" asp-action="Join">|Start career as a Contractor!|</a>
+          </li>
+        }
 
         <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Logged as: @User.Identity?.Name!</a>
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">|Logged as: @User.Identity?.Name!|</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

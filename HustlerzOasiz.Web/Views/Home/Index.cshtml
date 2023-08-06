@@ -14,6 +14,7 @@
     </div>
 
     <div id="statistics_box" class="d-none">
+        <h2 id="date"></h2>
         <div id="stats-container" class="stats-container">
             <!-- Statistics will be populated here dynamically -->
         </div>
@@ -57,6 +58,9 @@
 
 <script>
     document.getElementById('statistics_btn').addEventListener('click', function () {
+        // Hide the show statistics button
+        this.classList.add('d-none');
+
         fetch('/api/stats')
             .then(response => response.json())
             .then(data => {
@@ -80,6 +84,10 @@
                     statsContainer.appendChild(box);
                 }
 
+                // Display the current date
+                let dateContainer = document.getElementById('date');
+                dateContainer.textContent = `Up to this date: ${new Date().toLocaleDateString()}`;
+
                 // Show the stats box and the hide button
                 document.getElementById('statistics_box').classList.remove('d-none');
                 document.getElementById('hide_statistics_btn').classList.remove('d-none');
@@ -90,6 +98,9 @@
     document.getElementById('hide_statistics_btn').addEventListener('click', function () {
         // Hide the stats box and the hide button
         document.getElementById('statistics_box').classList.add('d-none');
-        document.getElementById('hide_statistics_btn').classList.add('d-none');
+        this.classList.add('d-none');
+
+        // Show the show statistics button
+        document.getElementById('statistics_btn').classList.remove('d-none');
     });
 </script>

@@ -25,6 +25,15 @@ namespace HustlerzOasiz.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(setup => 
+            {
+                setup.AddPolicy("HustlerzOasiz", policyBuilder =>
+                {
+                    policyBuilder.WithOrigins("https://localhost:7049/").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+            
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -40,6 +49,8 @@ namespace HustlerzOasiz.WebApi
 
 
             app.MapControllers();
+
+            app.UseCors("HustlerzOasiz");
 
             app.Run();
         }

@@ -1,8 +1,16 @@
 ﻿@using HustlerzOasiz.Services.Data.Interfaces;
 @using MarauderzOasiz.Data.Models;
+@using static HustlerzOasiz.Web.Infrastructure.ClaimsPrincipalExtensions;
 
 @model IEnumerable<Job>
-@inject IContractorService contractorService;
+
+@inject IContractorService ContractorService
+@inject IJobService JobService
+@{
+    string userId = User.GetId()!;
+    bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
+    string contractorId = await ContractorService.GetContractorIdByUserIdAsync(userId);
+}
 
 <style>
     /* ...existing styles... */
@@ -76,6 +84,16 @@
 
     .btn-adopt {
         background-color: #f39c12;
+        color: #fff;
+    }
+
+    .btn-delete {
+        background-color: darkred;
+        color: #fff;
+    }
+
+    .btn-edit {
+        background-color: orange;
         color: #fff;
     }
 
@@ -167,7 +185,7 @@
                             {
                                 <p>Deadline: @job.Deadline</p>
                             }
-                            var contractor = contractorService.GetContractorByContractorIdAsync(job.ContractorId.ToString());
+                            var contractor = ContractorService.GetContractorByContractorIdAsync(job.ContractorId.ToString());
                             var username = contractor.Username;
 
                             <p>Published by: @username</p>
@@ -177,8 +195,26 @@
                     <!-- Buttons -->
                     <div class="button-container">
                         <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="btn btn-details">Details</a>
-                        <a href="@Url.Action("Adopt", "Job", new { id = job.Id })" class="btn btn-adopt">Adopt</a>
-                        <a href="@Url.Action("Quit", "Job", new { id = job.Id })" class="btn btn-quit">Quit</a>
+
+                        @if (await JobService.IsJobAdoptedByUserWithIdAsync(job.Id.ToString(), userId))
+                        {
+                            <a href="@Url.Action("Quit", "Job", new { id = job.Id })" class="btn btn-quit">Quit</a>
+                        }
+
+                        @if (!await JobService.IsJobAdoptedByUserWithIdAsync(job.Id.ToString(), userId))
+                        {
+                            @if (!await JobService.IsJobAdoptedByIdAsync(job.Id.ToString()))
+                            {
+                                <a href="@Url.Action("Adopt", "Job", new { id = job.Id })" class="btn btn-adopt">Adopt</a>
+                            }
+                        }
+
+                        @if (await JobService.IsContractorWithIdOwnerOfJobAsync(job.Id.ToString(), contractorId))
+                        {
+                            <a href="@Url.Action("Edit", "Job", new { id = job.Id })" class="btn btn-edit">Edit</a>
+                            <a href="@Url.Action("Delete", "Job", new { id = job.Id })" class="btn btn-delete">Delete</a>
+
+                        }
                     </div>
                 </div>
             }

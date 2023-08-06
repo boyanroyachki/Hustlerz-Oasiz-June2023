@@ -1,5 +1,15 @@
-﻿@using MarauderzOasiz.Data.Models;
+﻿@using HustlerzOasiz.Services.Data.Interfaces;
+@using MarauderzOasiz.Data.Models;
+@using static HustlerzOasiz.Web.Infrastructure.ClaimsPrincipalExtensions;
 @model Job
+
+@inject IContractorService ContractorService
+@inject IJobService JobService
+@{
+    string userId = User.GetId();
+    bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId());
+    string contractorId = await ContractorService.GetContractorIdByUserIdAsync(userId);
+}
 
 <style>
     body {
@@ -58,9 +68,41 @@
         transition: background-color 0.2s;
     }
 
+    .back-btn {
+        display: block;
+        background-color: #f39c12;
+        color: #333;
+        padding: 10px 20px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+    }
+
+    .quit-btn {
+        display: block;
+        background-color: red;
+        color: #333;
+        padding: 10px 20px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+    }
+
         .adopt-btn:hover {
             background-color: #e67e22;
         }
+
+    .back-btn:hover {
+        background-color: #e67e22;
+    }
+
+    .quit-btn:hover {
+        background-color: darkred;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -79,5 +121,16 @@
     <h2>The Contractor pays <strong>@Model.Price $</strong> for the job.</h2>
     <div class="divider"></div>
     <h2>@(Model.Deadline == null ? "Job has no deadline." : $"Job due to: {Model.Deadline}")</h2>
-    <a href="@Url.Action("Adopt", "Job", new { id = Model.Id })" class="adopt-btn">Adopt</a>
+    @if (!await JobService.IsJobAdoptedByIdAsync(Model.Id.ToString()))
+    {
+     <a href="@Url.Action("Adopt", "Job", new { id = Model.Id })" class="adopt-btn">Adopt</a>
+    }
+    else if(await JobService.IsJobAdoptedByUserWithIdAsync(Model.Id.ToString(), userId))
+    {
+        <a href="@Url.Action("Quit", "Job", new { id = Model.Id })" class="quit-btn">Quit</a>
+    }
+    @if (await JobService.IsJobAdoptedByIdAsync(Model.Id.ToString()))
+    {
+        <a href="@Url.Action("BrowseJobs", "Job", new { id = Model.Id })" class="back-btn">Job is adopted! Go to browse?</a>
+    }
 </div>

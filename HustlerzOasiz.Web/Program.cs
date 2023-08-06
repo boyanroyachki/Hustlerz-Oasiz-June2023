@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using HustlerzOasiz.Web.Infrastructure.Extensions;
 using HustlerzOasiz.Web.Infrastructure.CustomModelBinders;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HustlerzOasiz.Web
 {
@@ -44,7 +45,9 @@ namespace HustlerzOasiz.Web
             builder.Services.AddControllersWithViews().AddMvcOptions(options =>
             {
                 options.ModelBinderProviders.Insert(0, new CustomDecimalBinderProvider());
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); //cybersec
             });
+
             
 
             WebApplication app = builder.Build();
