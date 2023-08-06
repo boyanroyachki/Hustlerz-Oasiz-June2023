@@ -1,4 +1,5 @@
-﻿using HustlerzOasiz.Web.ViewModels.Home;
+﻿using HustlerzOasiz.Services.Data.Interfaces;
+using HustlerzOasiz.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,7 +8,9 @@ namespace HustlerzOasiz.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController() { }
+        private readonly IHomeService homeService;
+
+        public HomeController(IHomeService homeService) => this.homeService = homeService;
 
         //[AllowAnonymous]
         
@@ -38,9 +41,10 @@ namespace HustlerzOasiz.Web.Controllers
         //}                              
 
         [AllowAnonymous]
-        public IActionResult Index()  //done and working
+        public async Task<IActionResult> Index()  //done and working
         {
-            return View();
+            var stats = await homeService.GetStatsFromAppAsync();
+            return View(stats);
         }
 
         [AllowAnonymous]
