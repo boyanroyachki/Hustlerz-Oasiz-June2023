@@ -8,6 +8,6 @@ namespace MarauderzOasiz.Data.Models
         {
            this.AdoptedJobs = new HashSet<Job>();
         }
-    public virtual ICollection<Job> AdoptedJobs { get; set; }
+        public virtual ICollection<Job> AdoptedJobs { get; set; }
     }
 }

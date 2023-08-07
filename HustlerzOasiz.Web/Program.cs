@@ -1,12 +1,10 @@
 using HustlerzOasiz.Services.Data.Interfaces;
-using HustlerzOasiz.Services.Data;
 using HustlerzOasiz.Web.Data;
-using MarauderzOasiz.Data.Models;
-using Microsoft.EntityFrameworkCore;
-using HustlerzOasiz.Web.Infrastructure.Extensions;
 using HustlerzOasiz.Web.Infrastructure.CustomModelBinders;
-using Microsoft.AspNetCore.Builder;
+using HustlerzOasiz.Web.Infrastructure.Extensions;
+using MarauderzOasiz.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HustlerzOasiz.Web
 {
@@ -75,8 +73,16 @@ namespace HustlerzOasiz.Web
             app.UseAuthentication();  //1st
             app.UseAuthorization();  //2st
 
-            app.MapDefaultControllerRoute(); //could add custom route here
-            app.MapRazorPages();
+            app.UseEndpoints(config =>
+            {
+                config.MapControllerRoute(
+                    name: "ProtectingUrlPattern", 
+                    pattern: "/{controller}/{action}/{id}/{information}"
+                    );
+                config.MapDefaultControllerRoute();   //could add custom route here
+                config.MapRazorPages();
+
+            });
 
             app.Run();
         }
