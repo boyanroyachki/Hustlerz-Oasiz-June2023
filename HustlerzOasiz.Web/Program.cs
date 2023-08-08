@@ -44,6 +44,8 @@ namespace HustlerzOasiz.Web
             //
             builder.Services.AddApplicationServices(typeof(IJobService));
 
+            builder.Services.AddRecaptchaService(); //just for a testing
+
             //
             builder.Services.AddControllersWithViews().AddMvcOptions(options =>
             {
