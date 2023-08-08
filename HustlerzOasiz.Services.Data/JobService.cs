@@ -1,4 +1,6 @@
-﻿using HustlerzOasiz.Services.Data.Interfaces;
+﻿using AutoMapper;
+using HustlerzOasiz.Services.Data.Interfaces;
+using HustlerzOasiz.Services.Mapping;
 using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
@@ -10,8 +12,14 @@ namespace HustlerzOasiz.Services.Data
     public class JobService : IJobService
 	{
 		private readonly HustlerzOasizDbContext data;
+		//private readonly IMapper mapper;
 
-		public JobService(HustlerzOasizDbContext data) => this.data = data;
+		public JobService(HustlerzOasizDbContext data/*, IMapper mapper*/)
+		{
+			this.data = data;
+			//this.mapper = mapper;
+		}
+
 
 
 		//Methods:
@@ -52,18 +60,20 @@ namespace HustlerzOasiz.Services.Data
 
 		public async Task PublishJobAsync(PublishAJobViewModel model, string contractorId)
 		{
-			Job job = new Job()
-			{
-				Title = model.Title,
-				Location = model.Location,
-				Details = model.Details,
-				Price = model.Price,
-				DatePosted = DateTime.Now,
-				CategoryId = model.CategoryId,
-				ContractorId = Guid.Parse(contractorId),
-				Deadline = model.Deadline,
-				ImageURLs = model.ImageURLs
-			};
+			//Job job = new Job()
+			//{
+			//	Title = model.Title,
+			//	Location = model.Location,
+			//	Details = model.Details,
+			//	Price = model.Price,
+			//	DatePosted = DateTime.Now,
+			//	CategoryId = model.CategoryId,
+			//	ContractorId = Guid.Parse(contractorId),
+			//	Deadline = model.Deadline,
+			//	ImageURLs = model.ImageURLs
+			//};
+			Job job = AutoMapperConfig.MapperInstance.Map<Job>(model);
+			job.ContractorId = Guid.Parse(contractorId);
 
 			await data.Jobs.AddAsync(job);
 			await data.SaveChangesAsync();

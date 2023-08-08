@@ -1,11 +1,14 @@
 using HustlerzOasiz.Services.Data.Interfaces;
+using HustlerzOasiz.Services.Mapping;
 using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.Infrastructure.CustomModelBinders;
 using HustlerzOasiz.Web.Infrastructure.Extensions;
+using HustlerzOasiz.Web.ViewModels.Home;
 using MarauderzOasiz.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using static HustlerzOasiz.Common.GeneralApplicationConstants;
 
 namespace HustlerzOasiz.Web
@@ -36,7 +39,7 @@ namespace HustlerzOasiz.Web
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
 
 
-            }).AddRoles<IdentityRole<Guid>>()
+            }).AddRoles<IdentityRole<Guid>>() //this is the most important for roles, after adding this line you can add roles trough MSSMS if you wish
                 .AddEntityFrameworkStores<HustlerzOasizDbContext>();
             //
             builder.Services.AddApplicationServices(typeof(IJobService));
@@ -51,6 +54,8 @@ namespace HustlerzOasiz.Web
             
 
             WebApplication app = builder.Build();
+
+            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

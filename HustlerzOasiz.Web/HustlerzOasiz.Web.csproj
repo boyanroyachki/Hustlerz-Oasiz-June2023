@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.20" />
@@ -19,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HustlerzOasiz.Common\HustlerzOasiz.Common.csproj" />
     <ProjectReference Include="..\HustlerzOasiz.Services.Data\HustlerzOasiz.Services.Data.csproj" />
+    <ProjectReference Include="..\HustlerzOasiz.Services.Maping\HustlerzOasiz.Services.Mapping.csproj" />
     <ProjectReference Include="..\HustlerzOasiz.Web.Infrastructure\HustlerzOasiz.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\HustlerzOasiz.Web.ViewModels\HustlerzOasiz.Web.ViewModels.csproj" />
     <ProjectReference Include="..\HustlerzOasiz.WebApi\HustlerzOasiz.WebApi.csproj" />

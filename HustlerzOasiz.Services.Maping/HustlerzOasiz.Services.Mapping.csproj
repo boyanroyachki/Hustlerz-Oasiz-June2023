@@ -8,14 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.20" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.20" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.20" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.20" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HustlerzOasiz.Common\HustlerzOasiz.Common.csproj" />
+    <ProjectReference Include="..\HustlerzOasiz.Services.Data.Models\HustlerzOasiz.Services.Data.Models.csproj" />
+    <ProjectReference Include="..\MarauderzOasiz.Data.Models\HustlerzOasiz.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

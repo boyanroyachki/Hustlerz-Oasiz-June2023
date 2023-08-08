@@ -1,10 +1,12 @@
-﻿using HustlerzOasiz.Web.ViewModels.Category;
+﻿using AutoMapper;
+using HustlerzOasiz.Services.Mapping;
+using HustlerzOasiz.Web.ViewModels.Category;
 using System.ComponentModel.DataAnnotations;
 using static HustlerzOasiz.Common.EntityValidationConstants.Job;
 
 namespace HustlerzOasiz.Web.ViewModels.Job
 {
-	public class PublishAJobViewModel
+    public class PublishAJobViewModel : IMapTo<MarauderzOasiz.Data.Models.Job>, IHaveCustomMappings
 	{
 		[Required]
 		[MinLength(TitleMinLength)]
@@ -33,5 +35,11 @@ namespace HustlerzOasiz.Web.ViewModels.Job
 		public string? ImageURLs { get; set; } //optional
 
 		public IEnumerable<ChooseACategoryFormModel> Categories { get; set; } = new HashSet<ChooseACategoryFormModel>();
-	}
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+			configuration.CreateMap<PublishAJobViewModel, MarauderzOasiz.Data.Models.Job>()
+				.ForMember(d => d.ContractorId, opt => opt.Ignore());
+        }
+    }
 }
