@@ -3,8 +3,10 @@ using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.Infrastructure.CustomModelBinders;
 using HustlerzOasiz.Web.Infrastructure.Extensions;
 using MarauderzOasiz.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static HustlerzOasiz.Common.GeneralApplicationConstants;
 
 namespace HustlerzOasiz.Web
 {
@@ -34,7 +36,7 @@ namespace HustlerzOasiz.Web
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
 
 
-            })
+            }).AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<HustlerzOasizDbContext>();
             //
             builder.Services.AddApplicationServices(typeof(IJobService));
@@ -72,6 +74,8 @@ namespace HustlerzOasiz.Web
 
             app.UseAuthentication();  //1st
             app.UseAuthorization();  //2st
+
+            app.SeedAdmin(DevelopmentAdminEmail); //make admin by const emain in HustlerzOasiz.Common/GeneralApplicationConstants;
 
             app.UseEndpoints(config =>
             {

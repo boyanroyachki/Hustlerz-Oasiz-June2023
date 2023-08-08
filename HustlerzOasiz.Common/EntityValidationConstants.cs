@@ -43,8 +43,8 @@
 
         public static class AppUser
         {
-            public const int UsernameMinLength = 2;
-            public const int UsernameMaxLength = 15;
+            public const int FirstNameMinLength = 2;
+            public const int FirstNameMaxLength = 25;
         }
     }
 }

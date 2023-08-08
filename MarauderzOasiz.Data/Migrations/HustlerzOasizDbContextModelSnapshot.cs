@@ -42,6 +42,11 @@ namespace HustlerzOasiz.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -72,15 +77,8 @@ namespace HustlerzOasiz.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasDefaultValue("DefaultName");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -228,11 +226,11 @@ namespace HustlerzOasiz.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f794ad20-55c7-494d-b060-4502054ee88a"),
+                            Id = new Guid("734a3bb2-a3f5-4c80-97c5-5ca29968e426"),
                             CategoryId = 2,
                             ContractorId = new Guid("5bb27ea6-15ab-4602-b761-1cd6d4347356"),
-                            DatePosted = new DateTime(2023, 8, 7, 15, 58, 43, 465, DateTimeKind.Local).AddTicks(6131),
-                            Deadline = new DateTime(2023, 9, 21, 15, 58, 43, 465, DateTimeKind.Local).AddTicks(6208),
+                            DatePosted = new DateTime(2023, 8, 8, 0, 8, 37, 974, DateTimeKind.Local).AddTicks(3251),
+                            Deadline = new DateTime(2023, 9, 22, 0, 8, 37, 974, DateTimeKind.Local).AddTicks(3312),
                             Details = "Train local forces in advanced defensive tactics to counter potential threats. Requires expertise in urban warfare strategies.",
                             ExecutorId = new Guid("eab58257-2186-4f8c-97e3-08db86032dab"),
                             IsActive = false,

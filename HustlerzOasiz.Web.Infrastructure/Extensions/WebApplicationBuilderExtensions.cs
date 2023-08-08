@@ -1,7 +1,9 @@
-﻿using HustlerzOasiz.Services.Data;
-using HustlerzOasiz.Services.Data.Interfaces;
+﻿using MarauderzOasiz.Data.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using static HustlerzOasiz.Common.GeneralApplicationConstants;
 
 namespace HustlerzOasiz.Web.Infrastructure.Extensions
 {
@@ -29,6 +31,36 @@ namespace HustlerzOasiz.Web.Infrastructure.Extensions
                 }
                 services.AddScoped(interfaceType, st);
             }
+        }
+
+        //Very important, learn each component, later
+        public static IApplicationBuilder SeedAdmin(this IApplicationBuilder applicationBuilder, string email)
+        {
+            using IServiceScope scopedServices = applicationBuilder.ApplicationServices.CreateScope();
+
+            IServiceProvider serviceProvider = scopedServices.ServiceProvider;
+
+            UserManager<AppUser> userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            RoleManager<IdentityRole<Guid>> roleManager
+                = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(AdminRoleName))
+                {
+                    return;
+                }
+                IdentityRole<Guid> identityRole = new IdentityRole<Guid>(AdminRoleName);
+                await roleManager.CreateAsync(identityRole);
+
+                AppUser admin = await userManager.FindByEmailAsync(email);
+
+                await userManager.AddToRoleAsync(admin, AdminRoleName);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            return applicationBuilder;
         }
     }
 }
