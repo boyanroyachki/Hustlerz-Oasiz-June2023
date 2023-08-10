@@ -25,7 +25,10 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         bool ContractorExistsByUserAsync(AppUser user);
 
+        Task<IEnumerable<Job>> GetContractorsOwnedJobsByUserIdAsync(string userId);
 
 
-	}
+
+
+    }
 }

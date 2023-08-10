@@ -1,0 +1,7 @@
+﻿@using MarauderzOasiz.Data.Models;
+@model IEnumerable<Job>
+
+	@foreach (var job in Model)
+ {
+	<p>@job.Title</p>
+ }

@@ -1,4 +1,5 @@
-﻿using HustlerzOasiz.Services.Data.Interfaces;
+﻿using HustlerzOasiz.Services.Data;
+using HustlerzOasiz.Services.Data.Interfaces;
 using HustlerzOasiz.Web.Infrastructure;
 using HustlerzOasiz.Web.ViewModels.Job;
 using MarauderzOasiz.Data.Models;
@@ -453,6 +454,33 @@ namespace HustlerzOasiz.Web.Controllers
                 this.TempData[ErrorMessage] = "Unexpected error accured while trying to quit job!";
                 return this.RedirectToAction("MyJobs", "Job");
             }
+        }
+
+        //working quite well!
+        public async Task<IActionResult> OwnedJobs()
+        {
+            try
+            {
+                bool isUserContractor = await contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
+                if (!isUserContractor)
+                {
+                    this.TempData[WarningMessage] = "Only Contractors can own jobs!";
+                    return this.RedirectToAction("Join", "Contractor");
+                }
+                else
+                {
+                    var ownedJobs = await this.contractorService.GetContractorsOwnedJobsByUserIdAsync(this.User.GetId()!);
+
+                    return this.View(ownedJobs);
+                }
+            }
+            catch (Exception)
+            {
+                this.TempData[ErrorMessage] = "Unexpected error accured while trying to accesses user's owned Jobs!";
+                return this.RedirectToAction("Index", "Home");
+
+            }
+            
         }
 
         

@@ -130,5 +130,18 @@ namespace HustlerzOasiz.Services.Data
         }
 
         //
+
+        public async Task<IEnumerable<Job>> GetContractorsOwnedJobsByUserIdAsync(string userId)
+        {
+            Contractor contractor = await this.data.Contractors.FirstAsync(x => x.UserId.ToString() == userId);
+
+            string contravtorId = contractor.Id.ToString();
+
+            Job[] contractorsOwnedJobs = await this.data.Jobs
+                .Where(x => x.ContractorId.ToString() == contravtorId)
+                .ToArrayAsync();
+
+            return contractorsOwnedJobs;
+        }
     }
 }
