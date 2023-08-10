@@ -1,21 +1,11 @@
-﻿@using HustlerzOasiz.Web.Infrastructure;
-@{
-    ViewData["Title"] = "Home Page";
-    bool isUserAdmin = this.User.IsAdmin();
+﻿@{
+    ViewData["Title"] = "Admin Home Page";
+    Layout = "_AdminLayout";
 }
 
 <div class="text-center">
-    @if (!isUserAdmin)
-    {
-      <h1 class="display-4">Welcome to Hustlerz Oasiz!</h1>
-      <p><strong>Your place to offer or seek services</strong></p>
-    }
-    else
-    {
-        <h1 class="display-4">Welcome back, sir!</h1>
-        <p><strong>Administrator mode</strong></p>
-
-    }
+    <h1 class="display-4">Welcome to Hustlerz Oasiz Admin Area!</h1>
+    <p><strong>Your place to manage the platform</strong></p>
 
     <div class="row">
         <div class="col-12 text-center">

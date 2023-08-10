@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace HustlerzOasiz.Services.Mapping
+namespace HustlerzOasiz.Services.Mapping.Interfaces
 {
     public interface IHaveCustomMappings
     {

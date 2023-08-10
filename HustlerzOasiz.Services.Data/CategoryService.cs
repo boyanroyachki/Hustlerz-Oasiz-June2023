@@ -3,11 +3,7 @@ using HustlerzOasiz.Web.Data;
 using HustlerzOasiz.Web.ViewModels.Category;
 using MarauderzOasiz.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HustlerzOasiz.Web.ViewModels.Category;
 
 namespace HustlerzOasiz.Services.Data
 {
@@ -50,5 +46,17 @@ namespace HustlerzOasiz.Services.Data
         }
 
         //
+
+        public async Task CreateCategoryAsync(AddCategoryFormModel model)
+        {
+            var newCategory = new Category()
+            {
+                Name = model.Name,
+                Description = model.Description,
+            };
+
+            await this.data.Categories.AddAsync(newCategory);
+            await this.data.SaveChangesAsync();
+        }
     }
 }

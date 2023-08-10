@@ -5,6 +5,8 @@
         public const string CreatedOn = "15/07/2023";
         public const string AdminRoleName = "Admin";
 
-        public const string DevelopmentAdminEmail = "Joyan@gmail.com"; 
+        public const string DevelopmentAdminEmail = "Joyan@gmail.com";
+
+        public const string AdminAreaName = "AdminArea";
     }
 }

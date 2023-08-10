@@ -8,6 +8,7 @@
 @inject IContractorService ContractorService
 @{
     bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId());
+    bool isUserAdmin = this.User.IsAdmin();
 }
 
 <ul class="navbar-nav">
@@ -20,9 +21,19 @@
           </li>
         }
 
-        <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">|Logged as: @User.Identity?.Name!|</a>
-        </li>
+        @if (!isUserAdmin)
+        {
+           <li class="nav-item">
+             <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">|Logged as: @User.Identity?.Name!|</a>
+           </li>
+            
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">|Logged as: Administrator|</a>
+            </li>
+        }
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-white">Logout</button>

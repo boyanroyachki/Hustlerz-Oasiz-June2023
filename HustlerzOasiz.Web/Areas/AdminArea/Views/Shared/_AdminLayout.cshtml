@@ -6,7 +6,6 @@
 @inject IContractorService ContractorService
 @{
 	bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId());
-	bool isUserAdmin = this.User.IsAdmin();
 }
 <!DOCTYPE html>
 <html lang="en">

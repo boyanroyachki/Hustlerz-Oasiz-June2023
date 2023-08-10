@@ -37,6 +37,8 @@ namespace HustlerzOasiz.Services.Data.Interfaces
 
         Task<bool> isContractorOwnerOfJobByUserIdAsync(string userId, string jobId); //
 
+        Task<int> GetNumberOfPublishedJobsByContractorId(string contractorId);
+
 
 
 

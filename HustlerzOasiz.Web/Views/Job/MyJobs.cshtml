@@ -6,10 +6,12 @@
 
 @inject IContractorService ContractorService
 @inject IJobService JobService
+@inject ICategoryService CategoryService;
 @{
     string userId = User.GetId()!;
     bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
     string contractorId = await ContractorService.GetContractorIdByUserIdAsync(userId);
+    var allCategories = await CategoryService.GetCategoriesAsync();
 }
 
 <style>
@@ -141,7 +143,7 @@
     @if (Model.Count(x => x.Status == "Active") == 0)
     {
         <div class="text-center">
-            <h1>You have no active Jobs!</h1>
+            <h1>You have no active Jobs from this Category!</h1>
         </div>
         <div class="text-center">
             <a href="@Url.Action("BrowseJobs", "Job")" class="btn btn-primary">Browse available jobs</a>
@@ -156,10 +158,10 @@
             <!-- ...existing form... -->
             <select name="categoryId">
                 <option value="">All Categories</option>
-                <option value="1">Ammonition</option>
-                <option value="2">Protection</option>
-                <option value="3">Special Missions</option>
-                <option value="4">Cyber warfare or/and Cyber security</option>
+                @foreach (var item in allCategories)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
                 <!-- etc -->
             </select>
             <button type="submit">Filter</button>

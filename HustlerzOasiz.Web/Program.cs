@@ -24,7 +24,7 @@ namespace HustlerzOasiz.Web
             builder.Services.AddDbContext<HustlerzOasizDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            
+
 
             //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -53,7 +53,7 @@ namespace HustlerzOasiz.Web
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); //cybersec
             });
 
-            
+
 
             WebApplication app = builder.Build();
 
@@ -86,13 +86,18 @@ namespace HustlerzOasiz.Web
 
             app.UseEndpoints(config =>
             {
+                //admin area priority
                 config.MapControllerRoute(
-                    name: "ProtectingUrlPattern", 
-                    pattern: "/{controller}/{action}/{id}/{information}"
-                    );
-                config.MapDefaultControllerRoute();   //could add custom route here
-                config.MapRazorPages();
+             name: "areas",
+             pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+                config.MapControllerRoute(
+                    name: "ProtectingUrlPattern",
+                    pattern: "/{controller}/{action}/{id}/{information}");
+
+
+                 config.MapDefaultControllerRoute();   //could add custom route here
+                 config.MapRazorPages();
             });
 
             app.Run();

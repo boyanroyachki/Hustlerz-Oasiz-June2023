@@ -270,6 +270,14 @@ namespace HustlerzOasiz.Services.Data
 				.AnyAsync(x => x.Id.ToString() == jobId);
         }
 
-		//
+        
+
+        public async Task<int> GetNumberOfPublishedJobsByContractorId(string contractorId)
+        {
+            var contractorsJobs = this.data.Jobs.Where(x => x.ContractorId.ToString() == contractorId);
+            return contractorsJobs.Count();
+        }
+
+        //
     }
 }

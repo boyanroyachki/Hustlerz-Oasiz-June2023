@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HustlerzOasiz.Services.Mapping;
+using HustlerzOasiz.Services.Mapping.Interfaces;
 using HustlerzOasiz.Web.ViewModels.Category;
 using System.ComponentModel.DataAnnotations;
 using static HustlerzOasiz.Common.EntityValidationConstants.Job;

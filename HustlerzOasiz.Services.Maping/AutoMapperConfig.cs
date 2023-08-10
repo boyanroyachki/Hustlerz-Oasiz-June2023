@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HustlerzOasiz.Services.Mapping.Interfaces;
 using System.Reflection;
 
 namespace HustlerzOasiz.Services.Mapping

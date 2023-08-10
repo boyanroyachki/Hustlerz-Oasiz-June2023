@@ -10,7 +10,7 @@ using static HustlerzOasiz.Common.NotificationMessagesConstants;
 namespace HustlerzOasiz.Web.Controllers
 {
 
-	public class JobController : BaseController
+    public class JobController : BaseController
     {
         private readonly IJobService jobService;
         private readonly ICategoryService categoryService;
@@ -32,19 +32,7 @@ namespace HustlerzOasiz.Web.Controllers
         }  //done and working
 
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> All([FromQuery] AllHousesQueryModel queryModel)
-        //{
-        //    AllHousesFilteredAndPagedServiceModel serviceModel =
-        //        await houseService.AllAsync(queryModel);
-
-        //    queryModel.Houses = serviceModel.Houses;
-        //    queryModel.TotalHouses = serviceModel.TotalHousesCount;
-        //    queryModel.Categories = await categoryService.AllCategoryNamesAsync();
-
-        //    return View(queryModel);
-        //}
+        
 
         [HttpGet]
         public async Task<IActionResult> PublishAjob()
@@ -130,7 +118,7 @@ namespace HustlerzOasiz.Web.Controllers
 
         //try
         [AllowAnonymous]
-        public  IActionResult BrowseJobs(int? categoryId = null)   //not working
+        public  IActionResult BrowseJobs(int? categoryId = null)   //done
         {
             var jobs = this.jobService.GetJobsByCategory(categoryId);
             return this.View(jobs);
@@ -196,22 +184,28 @@ namespace HustlerzOasiz.Web.Controllers
                 this.TempData[ErrorMessage] = "Job with the given ID does not exist!";
                 return RedirectToAction("BrowseJobs", "Job");
             }
-            bool isUserContractor = await this.contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
-
-            if (!isUserContractor)
+            bool isUserAdmin = this.User.IsAdmin();
+            if (!isUserAdmin)
             {
-                this.TempData[ErrorMessage] = "You must be a contractor in order to edit jobs!";
-                return RedirectToAction("Join", "Contractor");
+                bool isUserContractor = await this.contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
+
+                if (!isUserContractor)
+                {
+                    this.TempData[ErrorMessage] = "You must be a contractor in order to edit jobs!";
+                    return RedirectToAction("Join", "Contractor");
+                }
+
+                string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
+                bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
+
+                if (!isContractorOwner)
+                {
+                    this.TempData[ErrorMessage] = "Cannot edit jobs you dont own!";
+                    return RedirectToAction("MyJobs", "Job");
+                }
             }
+
             
-            string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
-            bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
-
-            if (!isContractorOwner)
-            {
-                this.TempData[ErrorMessage] = "Cannot edit jobs you dont own!";
-                return RedirectToAction("MyJobs", "Job");
-            }
 
             try
             {
@@ -252,17 +246,24 @@ namespace HustlerzOasiz.Web.Controllers
                 return this.View(model);
             }
             this.TempData[SuccessMessage] = "Job was edited successfully";
+            if (this.User.IsAdmin())
+            {
+                this.TempData[WarningMessage] = "The Administrator applied changes on the application!";
+            }
             return this.RedirectToAction("Detail", "Job", new {id});
         }
 
-        public IActionResult MyJobs()
+        //done!
+        public IActionResult MyJobs(int? categoryId = null)
         {
             try
             {
-				string userId = this.User.GetId()!;
-				var jobs = this.jobService.GetUsersJobsByUserIdAsync(userId);
+                string userId = this.User.GetId();
+                var jobs = this.jobService.GetJobsByCategory(categoryId);
+                var result = jobs.Where(x => x.ExecutorId.ToString() == userId);
+                
 
-                return View(jobs);
+                return View(result);
 			}
             catch (Exception)
             {
@@ -270,7 +271,7 @@ namespace HustlerzOasiz.Web.Controllers
 				this.TempData[ErrorMessage] = "You have not adopted any jobs!";
 				return RedirectToAction("BrowseJobs", "Job");
 			}
-        }
+        } 
 
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
@@ -284,20 +285,26 @@ namespace HustlerzOasiz.Web.Controllers
 			}
 			bool isUserContractor = await this.contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
 
-			if (!isUserContractor)
-			{
-				this.TempData[ErrorMessage] = "You must be a contractor in order to delete jobs!";
-				return RedirectToAction("Join", "Contractor");
-			}
+            bool isUserAdmin = this.User.IsAdmin();
+            if (!isUserAdmin)
+            {
+                if (!isUserContractor)
+                {
+                    this.TempData[ErrorMessage] = "You must be a contractor in order to delete jobs!";
+                    return RedirectToAction("Join", "Contractor");
+                }
 
-			string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
-			bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
+                string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
+                bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
 
-			if (!isContractorOwner)
-			{
-				this.TempData[ErrorMessage] = "Cannot delete jobs you dont own!";
-				return RedirectToAction("MyJobs", "Job");
-			}
+                if (!isContractorOwner)
+                {
+                    this.TempData[ErrorMessage] = "Cannot delete jobs you dont own!";
+                    return RedirectToAction("MyJobs", "Job");
+                }
+            }
+
+			
 
             try
             {
@@ -324,19 +331,23 @@ namespace HustlerzOasiz.Web.Controllers
             }
             bool isUserContractor = await this.contractorService.ContractorExistsByUserIdAsync(this.User.GetId()!);
 
-            if (!isUserContractor)
+            bool isUserAdmin = this.User.IsAdmin();
+            if (!isUserAdmin)
             {
-                this.TempData[ErrorMessage] = "You must be a contractor in order to delete jobs!";
-                return RedirectToAction("Join", "Contractor");
-            }
+                if (!isUserContractor)
+                {
+                    this.TempData[ErrorMessage] = "You must be a contractor in order to delete jobs!";
+                    return RedirectToAction("Join", "Contractor");
+                }
 
-            string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
-            bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
+                string contractorId = await this.contractorService.GetContractorIdByUserIdAsync(this.User.GetId()!);
+                bool isContractorOwner = await this.jobService.IsContractorWithIdOwnerOfJobAsync(id, contractorId);
 
-            if (!isContractorOwner)
-            {
-                this.TempData[ErrorMessage] = "Cannot delete jobs you dont own!";
-                return RedirectToAction("MyJobs", "Job");
+                if (!isContractorOwner)
+                {
+                    this.TempData[ErrorMessage] = "Cannot delete jobs you dont own!";
+                    return RedirectToAction("MyJobs", "Job");
+                }
             }
 
 
@@ -346,7 +357,12 @@ namespace HustlerzOasiz.Web.Controllers
                 await this.jobService.DeleteJobByIdAsync(id);
 
                 this.TempData[SuccessMessage] = "You successesfully deleted the selected job!";
-                return this.RedirectToAction("Index", "Job");
+
+                if (this.User.IsAdmin())
+                {
+                    this.TempData[WarningMessage] = "The Administrator applied changes in the application!";
+                }
+                return this.RedirectToAction("BrowseJobs", "Job");
             }
             catch (Exception)
             {

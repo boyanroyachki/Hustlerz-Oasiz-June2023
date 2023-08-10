@@ -11,9 +11,13 @@ namespace HustlerzOasiz.Services.Data.Interfaces
     public interface ICategoryService
     {
         Task<IEnumerable<ChooseACategoryFormModel>> GetCategoriesAsync(); //
+
         Task<bool> ExistsByIdAsync(int id); //
 
         Task<Category> GetCategoryByIdAsync(int id); //
 
-	}
+        Task CreateCategoryAsync(AddCategoryFormModel model); //
+
+
+    }
 }

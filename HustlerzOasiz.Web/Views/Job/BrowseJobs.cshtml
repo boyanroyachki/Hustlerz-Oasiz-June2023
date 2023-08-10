@@ -6,11 +6,13 @@
 @model IEnumerable<Job>
 
 @inject IContractorService ContractorService
+@inject ICategoryService CategoryService;
 @inject IJobService JobService
 @{
     string userId = User.GetId();
     bool isUserContractor = await ContractorService.ContractorExistsByUserIdAsync(this.User.GetId());
     string contractorId = await ContractorService.GetContractorIdByUserIdAsync(userId);
+    var allCategories = await CategoryService.GetCategoriesAsync();
 }
 
 <style>
@@ -123,6 +125,11 @@
         color: #fff;
     }
 
+    .btn-delete {
+        background-color: #e74c3c;
+        color: #fff;
+    }
+
     .btn-edit {
         background-color: orange;
         color: #fff;
@@ -161,10 +168,14 @@
         <!-- ...existing form... -->
         <select name="categoryId">
             <option value="">All Categories</option>
-            <option value="1">Ammonition</option>
+            @foreach (var item in allCategories)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+          @*  <option value="1">Ammonition</option>
             <option value="2">Protection</option>
             <option value="3">Special Missions</option>
-            <option value="4">Cyber warfare or/and Cyber security</option>
+            <option value="4">Cyber warfare or/and Cyber security</option>*@
             <!-- etc -->
         </select>
         <button type="submit">Filter</button>
@@ -200,25 +211,35 @@
                 <!-- Buttons -->
                 <div class="button-container">
                  
-                    <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="btn btn-details">Details</a>
-                     
-                    @if (await JobService.IsJobAdoptedByUserWithIdAsync(job.Id.ToString(), userId))
+                    @if (!User.IsAdmin())
                     {
-                     <a href="@Url.Action("Quit", "Job", new { id = job.Id })" class="btn btn-quit">Quit</a>
-                    }
+                        <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="btn btn-details">Details</a>
 
-                    @if (!await JobService.IsJobAdoptedByUserWithIdAsync(job.Id.ToString(), userId))
-                    {
-                        @if (!await JobService.IsJobAdoptedByIdAsync(job.Id.ToString()))
+                        @if (await JobService.IsJobAdoptedByUserWithIdAsync(job.Id.ToString(), userId))
                         {
-                          <a href="@Url.Action("Adopt", "Job", new { id = job.Id })" class="btn btn-adopt">Adopt</a>
+                            <a href="@Url.Action("Quit", "Job", new { id = job.Id })" class="btn btn-quit">Quit</a>
+                        }
+
+                        @if (!await JobService.IsJobAdoptedByUserWithIdAsync(job.Id.ToString(), userId))
+                        {
+                            @if (!await JobService.IsJobAdoptedByIdAsync(job.Id.ToString()))
+                            {
+                                <a href="@Url.Action("Adopt", "Job", new { id = job.Id })" class="btn btn-adopt">Adopt</a>
+                            }
+                        }
+
+                        @if (await JobService.IsContractorWithIdOwnerOfJobAsync(job.Id.ToString(), contractorId))
+                        {
+                            <a href="@Url.Action("Edit", "Job", new { id = job.Id })" class="btn btn-edit">Edit</a>
                         }
                     }
-
-                   @if (await JobService.IsContractorWithIdOwnerOfJobAsync(job.Id.ToString(), contractorId))
+                    else
                     {
+                        <a href="@Url.Action("Detail", "Job", new { id = job.Id })" class="btn btn-details">Details</a>
                         <a href="@Url.Action("Edit", "Job", new { id = job.Id })" class="btn btn-edit">Edit</a>
+                        <a href="@Url.Action("Delete", "Job", new { id = job.Id })" class="btn btn-delete">Delete</a>
                     }
+                    
 
                 </div>
             </div>
